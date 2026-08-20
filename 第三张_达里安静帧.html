@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="李奥《达里安》排版静帧">
+  <title>达里安 · 李奥</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page-x: clamp(22px, 4.65vw, 76px);
+      --page-y: clamp(24px, 5.2vh, 60px);
+      --paper: #fff;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #05080a;
+    }
+
+    body {
+      color: var(--paper);
+      font-family: "Arial Narrow", "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100svh;
+      isolation: isolate;
+      overflow: hidden;
+      background: #05080a;
+    }
+
+    .frame::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgba(0, 0, 0, .38);
+      content: "";
+      pointer-events: none;
+    }
+
+    .background,
+    .portrait-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .background {
+      z-index: -3;
+    }
+
+    .portrait-overlay {
+      z-index: -2;
+      opacity: .5;
+      mix-blend-mode: screen;
+    }
+
+    .title {
+      position: absolute;
+      top: 24%;
+      left: var(--page-x);
+      width: min(45vw, 720px);
+      aspect-ratio: 2.65;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .title img {
+      position: absolute;
+      top: -45%;
+      left: -10%;
+      display: block;
+      width: 116%;
+      height: auto;
+    }
+
+    .lyrics {
+      position: absolute;
+      right: var(--page-x);
+      bottom: var(--page-y);
+      left: var(--page-x);
+      display: grid;
+      grid-template-columns: 1fr 1.4fr 1fr;
+      align-items: end;
+      gap: clamp(24px, 4vw, 72px);
+      margin: 0;
+      color: var(--paper);
+      font-family: "Arial Narrow", "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+      font-size: clamp(11px, .86vw, 14px);
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: .07em;
+      line-height: 1.7;
+      text-shadow: 0 1px 18px rgba(0, 0, 0, .66);
+    }
+
+    .lyrics p {
+      margin: 0;
+    }
+
+    .origin {
+      line-height: 1.75;
+    }
+
+    .journey {
+      text-align: center;
+    }
+
+    .chorus {
+      font-size: clamp(13px, 1.05vw, 17px);
+      letter-spacing: .03em;
+      line-height: 1.55;
+      text-align: right;
+    }
+
+    @media (max-width: 720px) {
+      .title {
+        top: 34%;
+        left: var(--page-x);
+        width: min(72vw, 430px);
+      }
+
+      .lyrics {
+        right: var(--page-x);
+        bottom: var(--page-y);
+        left: var(--page-x);
+        display: block;
+        height: 30%;
+        font-size: clamp(14px, 3.7vw, 16px);
+        line-height: 1.7;
+      }
+
+      .origin {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .journey {
+        position: absolute;
+        top: 45%;
+        right: 0;
+        left: 0;
+        font-size: inherit;
+        text-align: center;
+      }
+
+      .chorus {
+        position: absolute;
+        right: var(--page-x);
+        bottom: 0;
+        right: 0;
+        font-size: clamp(15px, 4.1vw, 17px);
+      }
+    }
+
+    @media (max-height: 560px) and (min-width: 721px) {
+      .title {
+        top: 22%;
+        width: min(44vw, 620px);
+      }
+
+      .lyrics {
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .chorus {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" aria-label="李奥《达里安》">
+    <img class="background" src="./scene-assets/home-still.jpg" alt="">
+    <img class="portrait-overlay" src="./scene-assets/portrait.JPG" alt="">
+
+    <h1 class="title">
+      <img src="./scene-assets/darian-title.png" alt="达里安">
+    </h1>
+
+    <blockquote class="lyrics">
+      <div class="origin">
+        <p>他耕地的犁</p>
+        <p>车间的铆钉</p>
+      </div>
+      <p class="journey">走出了山里又走入了另一座山林</p>
+      <div class="chorus">
+        <p>达里安 Don't You Die</p>
+        <p>活着</p>
+      </div>
+    </blockquote>
+  </main>
+</body>
+</html>

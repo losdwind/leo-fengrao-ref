@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="李奥《丰饶之海》专辑介绍排版静帧">
+  <title>丰饶之海 · 专辑介绍</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page-x: clamp(22px, 4.65vw, 76px);
+      --paper: #fff;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #05080a;
+    }
+
+    body {
+      color: var(--paper);
+      font-family: "Arial Narrow", "Helvetica Neue", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100svh;
+      isolation: isolate;
+      overflow: hidden;
+      background: #05080a;
+    }
+
+    .frame::before {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgba(0, 0, 0, .48);
+      content: "";
+      pointer-events: none;
+    }
+
+    .background,
+    .portrait-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .background {
+      z-index: -3;
+    }
+
+    .portrait-overlay {
+      z-index: -2;
+      opacity: .42;
+      mix-blend-mode: screen;
+    }
+
+    .vertical-title {
+      position: absolute;
+      top: 13%;
+      left: var(--page-x);
+      height: min(74vh, 690px);
+      aspect-ratio: .52;
+      overflow: hidden;
+    }
+
+    .vertical-title img {
+      display: block;
+      width: auto;
+      height: 100%;
+      transform: translateX(-43%);
+      filter: brightness(0) invert(1);
+    }
+
+    .copy {
+      position: absolute;
+      top: 50%;
+      right: max(var(--page-x), 8vw);
+      width: min(38vw, 560px);
+      transform: translateY(-50%);
+      color: var(--paper);
+      font-size: clamp(15px, 1.2vw, 19px);
+      font-weight: 400;
+      letter-spacing: .04em;
+      line-height: 1.9;
+      text-shadow: 0 1px 20px rgba(0, 0, 0, .62);
+    }
+
+    .copy p {
+      margin: 0 0 1.35em;
+    }
+
+    .copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 720px) {
+      .vertical-title {
+        top: 5.5%;
+        left: var(--page-x);
+        height: min(34vh, 290px);
+      }
+
+      .copy {
+        top: 45%;
+        right: var(--page-x);
+        left: var(--page-x);
+        width: auto;
+        transform: none;
+        font-size: clamp(13px, 3.45vw, 15px);
+        letter-spacing: .03em;
+        line-height: 1.85;
+      }
+
+      .copy p {
+        margin-bottom: 1.15em;
+      }
+    }
+
+    @media (max-height: 560px) and (min-width: 721px) {
+      .vertical-title {
+        top: 10%;
+        height: 78vh;
+      }
+
+      .copy {
+        right: var(--page-x);
+        width: min(46vw, 560px);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" aria-label="李奥《丰饶之海》专辑介绍">
+    <img class="background" src="./scene-assets/home-still.jpg" alt="">
+    <img class="portrait-overlay" src="./scene-assets/portrait.JPG" alt="">
+
+    <div class="vertical-title" role="img" aria-label="丰饶之海">
+      <img src="./scene-assets/album-title-vertical.png" alt="">
+    </div>
+
+    <div class="copy">
+      <p>在人类抵达月球以前，丰饶之海曾被想象成一片汪洋。后来才知道，那里没有水，只有尘埃和岩石。</p>
+      <p>今天，我们拥有越来越多的信息与选择，却更难确认什么是真的，什么仍属于自己。丰饶之下，匮乏换了新的形状。</p>
+      <p>即使前方是荒漠，人还是会种下些什么，继续相爱，也继续创造。</p>
+    </div>
+  </main>
+</body>
+</html>
