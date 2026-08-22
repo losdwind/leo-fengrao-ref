@@ -324,8 +324,9 @@
     .absolute-glyph-line.emphasis .live-glyph { font-size:5.3cqw; }
     .absolute-glyph-line .live-glyph.is-track-number { font-family:var(--latin); font-size:2.4cqw; }
     .absolute-glyph-line .live-glyph.is-track-dot { font-family:var(--latin); font-size:2.1cqw; }
-    .verse-positioned { margin:0!important; writing-mode:vertical-rl!important; text-orientation:upright; font-size:3.15cqw!important; font-weight:300; line-height:1!important; letter-spacing:.46cqw!important; white-space:nowrap!important; }
-    .live-artboard .darian-title { top:45.29%; left:7.4%; bottom:auto; width:13.7%; height:31.52%; writing-mode:vertical-rl; text-orientation:upright; font-size:10.7cqw; letter-spacing:.09em; line-height:1; white-space:nowrap; }
+    .darian-verse-panel .vertical-copy { container-type:inline-size; }
+    .verse-positioned { margin:0!important; writing-mode:vertical-rl!important; text-orientation:upright; font-size:var(--verse-size,4cqw)!important; font-weight:300; line-height:1!important; letter-spacing:var(--verse-ls,.8cqw)!important; white-space:pre!important; }
+    .live-artboard .darian-title { top:45.29%; left:7.4%; bottom:auto; width:13.7%; height:31.52%; writing-mode:horizontal-tb; font-size:0; letter-spacing:0; }
     .live-artboard .darian-title::before { top:0; left:0; right:auto; width:3cqw; height:3cqw; border:0; border-top:1px solid; border-left:1px solid; }
     .live-artboard .darian-title::after { right:0; bottom:0; left:auto; width:3cqw; height:3cqw; border:0; border-right:1px solid; border-bottom:1px solid; }
     .live-artboard .darian-title small { position:absolute; top:8%; left:88%; margin:0; writing-mode:vertical-rl; font:1.35cqw/1 Arial,sans-serif; letter-spacing:.04em; }
@@ -345,7 +346,7 @@
     <video class="film-single" autoplay muted loop playsinline preload="metadata"><source src="./scene-assets/building-mobile.mp4" type="video/mp4"></video>
   </div>
   <main>
-    <section class="panel" data-scene="cover" data-motion="basic" data-background="grass" aria-label="丰饶之海封面"><div class="frame">
+    <section class="panel" aria-label="丰饶之海封面"><div class="frame">
       <div class="brand">THE SEA<br>OF FERTILITY</div>
       <div class="art-title-plane cover-art" role="img" aria-label="丰饶之海">
         <img class="cover-art-left" src="./scene-assets/psd-overlays/01.png" alt="" aria-hidden="true">
@@ -354,12 +355,12 @@
       <div class="cover-en reveal" style="--delay:.12s">THE SEA<br>OF FERTILITY</div>
       <h1 class="cover-thesis reveal" style="--delay:.2s">在匮乏中抵达丰饶<small>ARRIVING AT ABUNDANCE<br>THROUGH SCARCITY</small></h1>
     </div></section>
-    <section class="panel" data-scene="artist" data-motion="basic" data-background="grass" aria-label="李奥"><div class="frame">
+    <section class="panel" aria-label="李奥"><div class="frame">
       <div class="brand">THE SEA<br>OF FERTILITY</div>
       <img class="title-image artist-mark reveal" src="./scene-assets/home-artist.png" alt="李奥">
       <p class="artist-caption reveal" style="--delay:.15s">个人首张全长概念专辑<small>DEBUT FULL-LENGTH<br>CONCEPT ALBUM</small></p>
     </div></section>
-    <section class="panel" data-scene="chapters-overview" data-motion="overview" data-background="grass" aria-label="三章总览"><div class="frame">
+    <section class="panel" aria-label="三章总览"><div class="frame">
       <div class="brand">THE SEA<br>OF FERTILITY</div>
       <div class="art-title-plane overview-art" role="img" aria-label="丰饶之海">
         <img class="overview-art-top" src="./scene-assets/psd-overlays/shared-title-34.png" alt="" aria-hidden="true">
@@ -371,7 +372,7 @@
       <p class="vertical-thesis reveal" style="--delay:.12s">在匮乏中抵达丰饶<small>ARRIVING AT ABUNDANCE<br>THROUGH SCARCITY</small></p>
       <div class="chapter-index reveal" style="--delay:.22s"><span><small>01</small>出发</span><i>｜</i><span><small>02</small>发现</span><i>｜</i><span><small>03</small>融解</span></div>
     </div></section>
-    <section class="panel" data-scene="album-intro-1" data-motion="vertical-lines" data-background="grass" aria-label="专辑简介第一段"><div class="frame">
+    <section class="panel" aria-label="专辑简介第一段"><div class="frame">
       <p class="section-tag">「专辑简介」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="vertical-copy">
         <p class="vline reveal" style="--x:88%;--y:8%;--delay:.02s">人类曾把未抵达的月球</p>
         <p class="vline reveal" style="--x:71%;--y:26%;--delay:.08s">想象成一片汪洋，</p>
@@ -381,7 +382,7 @@
         <p class="vline reveal" style="--x:1%;--y:29%;--delay:.32s">想象人生的远方。</p>
       </div>
     </div></section>
-    <section class="panel" data-scene="album-intro-2" data-motion="vertical-lines" data-background="grass" aria-label="专辑简介第二段"><div class="frame">
+    <section class="panel" aria-label="专辑简介第二段"><div class="frame">
       <p class="section-tag">「专辑简介」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="vertical-copy">
         <p class="vline reveal" style="--x:88%;--y:34%;--delay:.02s">当离开故乡，</p>
         <p class="vline reveal" style="--x:70%;--y:16%;--delay:.08s">进入一个承诺丰饶的时代；</p>
@@ -391,7 +392,7 @@
         <p class="vline reveal" style="--x:1%;--y:28%;--delay:.32s">仍保有感受、爱与回答的能力。</p>
       </div>
     </div></section>
-    <section class="panel" data-scene="album-intro-3" data-motion="vertical-lines" data-background="grass" aria-label="专辑简介第三段"><div class="frame">
+    <section class="panel" aria-label="专辑简介第三段"><div class="frame">
       <p class="section-tag">「专辑简介」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="vertical-copy">
         <p class="vline reveal" style="--x:89%;--y:10%;--delay:.02s">专辑内部暗藏了一条</p>
         <p class="vline reveal" style="--x:73%;--y:22%;--delay:.07s">由《太空流民#123》系列</p>
@@ -403,14 +404,14 @@
       </div>
     </div></section>
 
-    <section class="panel" data-scene="chapter-1" data-motion="tracks" data-background="grass" aria-label="第一章 出发"><div class="frame">
+    <section class="panel" aria-label="第一章 出发"><div class="frame">
       <p class="section-tag">「第一章」</p><div class="brand">THE SEA<br>OF FERTILITY</div><h2 class="chapter-name reveal">「出发」<small>SET OUT</small></h2>
       <p class="track reveal" style="--x:63%;--y:19%;--delay:.06s"><small>01 ·</small>太空流民#1 出发</p>
       <p class="track reveal" style="--x:43%;--y:29%;--delay:.12s"><small>02 ·</small>达里安</p>
       <p class="track reveal" style="--x:23%;--y:19%;--delay:.18s"><small>03 ·</small>一天</p>
       <p class="track reveal" style="--x:6%;--y:28%;--delay:.24s"><small>04 ·</small>奔跑时的几要素</p>
     </div></section>
-    <section class="panel" data-scene="chapter-2" data-motion="tracks" data-background="grass" aria-label="第二章 发现"><div class="frame">
+    <section class="panel" aria-label="第二章 发现"><div class="frame">
       <p class="section-tag">「第二章」</p><div class="brand">THE SEA<br>OF FERTILITY</div><h2 class="chapter-name reveal">「发现」<small>FIND OUT</small></h2>
       <p class="track reveal" style="--x:69%;--y:20%;--delay:.04s"><small>05 ·</small>太空流民#2 发现</p>
       <p class="track reveal" style="--x:55%;--y:28%;--delay:.08s"><small>06 ·</small>石滩</p>
@@ -419,7 +420,7 @@
       <p class="track reveal" style="--x:13%;--y:20%;--delay:.2s"><small>09 ·</small>观看坍塌的几种姿势</p>
       <p class="track reveal" style="--x:1%;--y:36%;--delay:.24s"><small>10 ·</small>Limbo</p>
     </div></section>
-    <section class="panel" data-scene="chapter-3" data-motion="tracks" data-background="grass" aria-label="第三章 融解"><div class="frame">
+    <section class="panel" aria-label="第三章 融解"><div class="frame">
       <p class="section-tag">「第三章」</p><div class="brand">THE SEA<br>OF FERTILITY</div><h2 class="chapter-name reveal">「融解」<small>FADE OUT</small></h2>
       <p class="track reveal" style="--x:63%;--y:20%;--delay:.06s"><small>11 ·</small>太空流民#3 融解</p>
       <p class="track reveal" style="--x:43%;--y:34%;--delay:.12s"><small>12 ·</small>矛盾雨</p>
@@ -427,196 +428,419 @@
       <p class="track reveal" style="--x:6%;--y:36%;--delay:.24s"><small>14 ·</small>是的</p>
     </div></section>
 
-    <section class="panel darian-intro-panel" data-scene="darian-intro" data-motion="darian-title" data-background="single" aria-label="首发单曲 达里安"><div class="frame">
+    <section class="panel darian-intro-panel" aria-label="首发单曲 达里安"><div class="frame">
       <p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><h2 class="darian-title reveal">「达里安」<small>DARIAN</small></h2>
     </div></section>
-    <section class="panel" data-scene="darian-verse-1" data-motion="verse-rebuild" data-background="single" aria-label="达里安歌词第一段"><div class="frame">
+    <section class="panel" aria-label="达里安歌词第一段"><div class="frame">
       <p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="vertical-copy">
         <p class="vline reveal" style="--x:88%;--y:16%;--delay:.02s">劳作后收起　他耕地的犁</p>
         <p class="vline reveal" style="--x:73%;--y:8%;--delay:.07s">叫他怎能忘记　土地教的道理</p>
         <p class="vline reveal" style="--x:58%;--y:19%;--delay:.12s">矛盾和洗礼　无需来临</p>
         <p class="vline reveal" style="--x:43%;--y:25%;--delay:.17s">一贯随形如影　教他献祭自己</p>
         <p class="vline reveal" style="--x:28%;--y:6%;--delay:.22s">山谷在夜里唱枯萎和新生的歌剧</p>
-        <p class="vline reveal" style="--x:18%;--y:13%;--delay:.27s">农夫在田野写劳苦和希望的诗句</p>
-        <p class="vline reveal" style="--x:5%;--y:18%;--delay:.32s">WU　生活扣进肩里</p>
-        <p class="vline reveal" style="--x:-7%;--y:18%;--delay:.36s">用汗水　把辛劳洗净</p>
+        <p class="vline reveal" style="--x:13%;--y:13%;--delay:.27s">农夫在田野写劳苦和希望的诗句</p>
+        <p class="vline reveal" style="--x:-2%;--y:18%;--delay:.32s">WU　生活扣进肩里　用汗水　把辛劳洗净</p>
       </div>
     </div></section>
-    <section class="panel" data-scene="darian-wuwang" data-motion="hook" data-background="single" aria-label="达里安 勿亡"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>勿亡</p></div></div></section>
-    <section class="panel" data-scene="darian-jianchi" data-motion="hook" data-background="single" aria-label="达里安 坚持下去"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>坚持下去</p></div></div></section>
-    <section class="panel" data-scene="darian-fangqi" data-motion="hook" data-background="single" aria-label="达里安 不要放弃"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>不要放弃</p></div></div></section>
-    <section class="panel" data-scene="darian-huozhe" data-motion="hook" data-background="single" aria-label="达里安 活着"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>活着</p></div></div></section>
-    <section class="panel" data-scene="darian-verse-2" data-motion="verse-rebuild" data-background="single" aria-label="达里安歌词第二段"><div class="frame">
+    <section class="panel" aria-label="达里安 勿亡"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>勿亡</p></div></div></section>
+    <section class="panel" aria-label="达里安 坚持下去"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>坚持下去</p></div></div></section>
+    <section class="panel" aria-label="达里安 不要放弃"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>不要放弃</p></div></div></section>
+    <section class="panel" aria-label="达里安 活着"><div class="frame"><p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="chorus reveal"><h2>达里安</h2><strong>DON’T YOU DIE</strong><p>活着</p></div></div></section>
+    <section class="panel" aria-label="达里安歌词第二段"><div class="frame">
       <p class="section-tag">「首发单曲」</p><div class="brand">THE SEA<br>OF FERTILITY</div><div class="vertical-copy">
         <p class="vline reveal" style="--x:88%;--y:15%;--delay:.02s">文明的远景　他优先出局</p>
         <p class="vline reveal" style="--x:73%;--y:6%;--delay:.07s">功成便隐踪迹　等候新的泡影</p>
         <p class="vline reveal" style="--x:58%;--y:25%;--delay:.12s">车间的铆钉　铆住手臂</p>
         <p class="vline reveal" style="--x:43%;--y:20%;--delay:.17s">无心再看风景　困住他在原地</p>
         <p class="vline reveal" style="--x:28%;--y:7%;--delay:.22s">城市里广厦多眩目令他遥不可及</p>
-        <p class="vline reveal" style="--x:18%;--y:17%;--delay:.27s">走出了山里又走入了另一座山林</p>
-        <p class="vline reveal" style="--x:5%;--y:6%;--delay:.32s">Wu　人们丢掉自己</p>
-        <p class="vline reveal" style="--x:-7%;--y:18%;--delay:.36s">过一阵　又找回自己</p>
+        <p class="vline reveal" style="--x:13%;--y:17%;--delay:.27s">走出了山里又走入了另一座山林</p>
+        <p class="vline reveal" style="--x:-2%;--y:6%;--delay:.32s">Wu　人们丢掉自己　过一阵　又找回自己</p>
       </div>
     </div></section>
   </main>
   <div class="scroll-cue" aria-hidden="true">SCROLL</div>
   <script src="./scene-assets/vendor/gsap.min.js"></script>
   <script src="./scene-assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="./scene-assets/psd-overlays/pre-darian-motion-data.js"></script>
   <script>
     (()=>{
       if(!window.gsap||!window.ScrollTrigger)return;
       gsap.registerPlugin(ScrollTrigger);
       gsap.defaults({overwrite:'auto'});
 
-      const sceneList=[...document.querySelectorAll('.panel')];
-      const scenes=new Map(sceneList.map(panel=>[panel.dataset.scene,panel]));
-      const scene=id=>{
-        const panel=scenes.get(id);
-        if(!panel)throw new Error(`Missing scene: ${id}`);
-        return panel;
-      };
-      const artboardOf=panel=>{
+      const scenePanels=[...document.querySelectorAll('.panel')];
+      scenePanels.forEach(panel=>{
         const frame=panel.querySelector('.frame');
-        let artboard=frame.querySelector(':scope > .live-artboard');
-        if(!artboard){
-          artboard=document.createElement('div');
-          artboard.className='live-artboard';
-          [...frame.childNodes].forEach(node=>artboard.append(node));
-          frame.append(artboard);
-        }
-        return artboard;
-      };
-      sceneList.forEach(artboardOf);
-
+        const artboard=document.createElement('div');
+        artboard.className='live-artboard';
+        [...frame.children].forEach(node=>artboard.append(node));
+        frame.append(artboard);
+      });
       const panelCrossing=panel=>{
-        const artboard=artboardOf(panel);
-        const marker=artboard.querySelector('.section-tag,.brand');
+        const marker=panel.querySelector('.section-tag,.brand');
         if(!marker)return 46;
         const center=marker.offsetTop+marker.offsetHeight/2;
         return 50-center/(innerHeight||1)*100;
       };
-      const nextScene=panel=>sceneList[sceneList.indexOf(panel)+1]||null;
       const makeScrollTimeline=panel=>{
-        const nextPanel=nextScene(panel);
+        const panelIndex=scenePanels.indexOf(panel);
+        const nextPanel=scenePanels[panelIndex+1];
         return gsap.timeline({
           scrollTrigger:{
             trigger:panel,
             endTrigger:nextPanel||panel,
             start:()=>`top ${panelCrossing(panel)}%`,
             end:nextPanel?()=>`top ${panelCrossing(nextPanel)}%`:'bottom bottom',
-            scrub:.32,
+            scrub:.34,
             invalidateOnRefresh:true
           }
         }).to({}, {duration:1});
-      };
-      const inside=(panel,selector)=>[...artboardOf(panel).querySelectorAll(selector)];
-      const makeEntrance=(panel,targets,{fromY=9,toY=-9,fromScale=1.045,mid=.38,out=.58}={})=>{
-        const nodes=Array.isArray(targets)?targets:[targets];
-        const tl=makeScrollTimeline(panel);
-        tl.fromTo(nodes,{autoAlpha:0,yPercent:fromY,scale:fromScale},{autoAlpha:1,yPercent:0,scale:1,duration:.36,ease:'power2.out'},.02)
-          .to(nodes,{autoAlpha:1,yPercent:0,scale:1,duration:.16,ease:'none'},mid)
-          .to(nodes,{autoAlpha:0,yPercent:toY,scale:.975,duration:.38,ease:'power2.in'},out);
-        return tl;
       };
 
       const grassVideo=document.querySelector('.film-grass');
       const singleVideo=document.querySelector('.film-single');
       gsap.set(singleVideo,{autoAlpha:0});
-      gsap.timeline({
+      const singleVideoTl=gsap.timeline({
         scrollTrigger:{
-          trigger:scene('chapter-3'),
-          endTrigger:scene('darian-intro'),
-          start:()=>`top ${panelCrossing(scene('chapter-3'))}%`,
-          end:()=>`top ${panelCrossing(scene('darian-intro'))}%`,
+          trigger:scenePanels[9],
+          start:'top 92%',
+          end:()=>`top ${panelCrossing(scenePanels[9])}%`,
           scrub:.32,
           invalidateOnRefresh:true,
           onEnter:()=>{singleVideo.currentTime=0;singleVideo.play().catch(()=>{})},
           onEnterBack:()=>singleVideo.play().catch(()=>{}),
           onLeaveBack:()=>singleVideo.pause()
         }
-      }).to(grassVideo,{autoAlpha:0,duration:1,ease:'none'},0)
+      }).to({}, {duration:1});
+      singleVideoTl.to(grassVideo,{autoAlpha:0,duration:1,ease:'none'},0)
         .fromTo(singleVideo,{autoAlpha:0},{autoAlpha:1,duration:1,ease:'none'},0);
 
-      makeEntrance(scene('cover'),inside(scene('cover'),'.cover-art,.cover-en,.cover-thesis'));
-      makeEntrance(scene('artist'),inside(scene('artist'),'.artist-mark,.artist-caption'));
-
-      const overview=scene('chapters-overview');
-      const overviewTl=makeScrollTimeline(overview);
-      overviewTl.fromTo(inside(overview),{autoAlpha:0,xPercent:-9,scale:1.04},{autoAlpha:1,xPercent:0,scale:1,duration:.34,stagger:.025,ease:'power2.out'},.03)
-        .to(inside(overview,'.vertical-thesis,.chapter-index,.overview-art-en,.art-title-plane'),{autoAlpha:0,xPercent:8,scale:.975,duration:.38,stagger:.015,ease:'power2.in'},.60);
-
-      const addLineScene=panel=>{
-        const lines=inside(panel,'.vline,.track,.chapter-name');
-        const tag=inside(panel,'.section-tag,.brand');
+      const makeStage=(panel,selectors)=>{
+        const frame=panel.querySelector('.frame');
+        const sourceArtboard=frame.querySelector(':scope > .live-artboard');
+        const stage=document.createElement('div');
+        stage.className='live-content-stage';
+        const stageArtboard=document.createElement('div');
+        stageArtboard.className='live-artboard';
+        selectors.flatMap(selector=>[...sourceArtboard.querySelectorAll(`:scope > ${selector}`)]).forEach(node=>stageArtboard.append(node));
+        stage.append(stageArtboard);
+        frame.append(stage);
+        return stage;
+      };
+      const addBasicScene=(panel,content)=>{
         const tl=makeScrollTimeline(panel);
-        tl.fromTo(tag,{autoAlpha:0,yPercent:3},{autoAlpha:1,yPercent:0,duration:.16,ease:'none'},.02);
-        lines.forEach((line,index)=>{
-          const step=panel.dataset.motion==='tracks'? .035 : .045;
-          const start=.04+index*step;
-          tl.fromTo(line,
-            {autoAlpha:0,yPercent:14+index*1.6,scale:1.08,clipPath:'inset(0 0 100% 0)'},
-            {autoAlpha:1,yPercent:0,scale:1,clipPath:'inset(0 0 0% 0)',duration:.32,ease:'power2.out'},
+        tl.fromTo(content,{autoAlpha:0,yPercent:9,scale:1.045},{autoAlpha:1,yPercent:0,scale:1,duration:.36,ease:'power2.out'},.02)
+          .to(content,{autoAlpha:1,yPercent:0,scale:1,duration:.16,ease:'none'},.38)
+          .to(content,{autoAlpha:0,yPercent:-9,scale:.975,duration:.40,ease:'power2.in'},.56);
+      };
+      addBasicScene(scenePanels[0],makeStage(scenePanels[0],['.cover-art','.cover-en','.cover-thesis']));
+      addBasicScene(scenePanels[1],makeStage(scenePanels[1],['.artist-mark','.artist-caption']));
+
+      const page3Tl=makeScrollTimeline(scenePanels[2]);
+      const page3Thesis=scenePanels[2].querySelector('.vertical-thesis');
+      const chapterChildren=[...scenePanels[2].querySelector('.chapter-index').children];
+      const chapterUnits=[[chapterChildren[0],chapterChildren[1]],[chapterChildren[2],chapterChildren[3]],[chapterChildren[4]]];
+      page3Tl.fromTo(page3Thesis,{autoAlpha:0,xPercent:-15.5,scale:1.08},{autoAlpha:1,xPercent:0,scale:1,duration:.34,ease:'power2.out'},.03);
+      chapterUnits.forEach((unit,index)=>page3Tl.fromTo(unit,
+        {autoAlpha:0,xPercent:-14,scale:1.055},
+        {autoAlpha:1,xPercent:0,scale:1,duration:.36,ease:'power2.out'},
+        .13+index*.055
+      ));
+      page3Tl.to(page3Thesis,{autoAlpha:0,xPercent:9.5,scale:.97,duration:.38,ease:'power2.in'},.60);
+      chapterUnits.forEach((unit,index)=>page3Tl.to(unit,
+        {autoAlpha:0,xPercent:10,scale:.975,duration:.38,ease:'power2.in'},
+        .60+index*.018
+      ));
+
+      const splitGlyphs=element=>{
+        if(element.matches('.track')){
+          const small=element.querySelector('small');
+          const number=small.textContent.match(/\d+/)?.[0]||'';
+          small.replaceChildren();
+          const numberGlyph=document.createElement('span');
+          numberGlyph.className='live-glyph is-track-number';
+          numberGlyph.textContent=number;
+          const dotGlyph=document.createElement('span');
+          dotGlyph.className='live-glyph is-track-dot';
+          dotGlyph.textContent='·';
+          small.append(numberGlyph,dotGlyph);
+        }
+        const walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT);
+        const textNodes=[];
+        while(walker.nextNode()){
+          if(!walker.currentNode.parentElement.closest('.live-glyph'))textNodes.push(walker.currentNode);
+        }
+        textNodes.forEach(node=>{
+          const fragment=document.createDocumentFragment();
+          [...node.nodeValue].forEach(character=>{
+            const glyph=document.createElement('span');
+            glyph.className='live-glyph';
+            glyph.textContent=character;
+            fragment.append(glyph);
+          });
+          node.replaceWith(fragment);
+        });
+        return [...element.querySelectorAll('.live-glyph')];
+      };
+      const layoutGlyphLine=(line,boxes)=>{
+        line.classList.add('absolute-glyph-line');
+        const glyphs=[...line.querySelectorAll('.live-glyph')].filter(glyph=>glyph.textContent.trim());
+        glyphs.forEach((glyph,index)=>{
+          const box=boxes[index];
+          if(!box)return;
+          Object.assign(glyph.style,{
+            left:`${box[0]/15}%`,top:`${box[1]/20.05}%`,
+            width:`${box[2]/15}%`,height:`${box[3]/20.05}%`
+          });
+        });
+      };
+      const page4Centers=[
+        [[1320,549.5],[1320,621.5],[1320,693],[1320,765],[1320,837],[1320,909],[1320,981],[1320,1053],[1316.5,1128],[1320,1197]],
+        [[1104.5,823],[1105,896],[1105,968.5],[1105,1038.5],[1105,1112],[1105.5,1184.5],[1105,1256],[1094,1353]],
+        [[891,677],[891,749],[891,821.5],[890,893],[891,965.5],[891,1039]],
+        [[604,495],[645,558],[645,647],[645.5,738.5],[645.5,834],[645.5,927],[645,1021],[657,1147]],
+        [[398,823.5],[397,895],[398,966.5],[397,1039],[396.5,1111],[398,1183.5]],
+        [[183.5,676],[184,749],[184,821.5],[184,892],[184,965],[184,1037.5],[184,1109.5],[174,1200.5]]
+      ];
+      const page4Boxes=page4Centers.map((centers,groupIndex)=>centers.map(([x,y])=>{
+        const emphasis=groupIndex===3,size=emphasis?80:60,width=emphasis?62:44;
+        return [x-width/2,y-size/2,width,size];
+      }));
+      const page5Boxes=[
+        [[1300,669,37,60],[1299,741,43,60],[1298,818,44,55],[1298,885,44,61],[1299,956,40,61],[1303,1073,12,22]],
+        [[1083,430,44,60],[1083,502,45,60],[1083,599,44,7],[1083,646,44,61],[1083,722,45,56],[1083,791,45,59],[1083,862,44,60],[1083,934,44,60],[1085,1006,40,60],[1085,1079,43,59],[1083,1150,44,60],[1088,1241,12,47]],
+        [[869,559,44,57],[869,627,44,61],[869,699,44,61],[869,775,44,56],[869,844,44,59],[870,915,43,61],[869,993,44,51],[869,1063,44,57],[869,1131,44,61],[871,1203,40,60],[874,1319,12,22]],
+        [[592,632,26,26],[615,669,62,78],[615,760,62,80],[615,848,62,86],[616,942,61,84],[623,1098,76,27],[623,1125,76,23]],
+        [[377,435,44,54],[377,505,44,56],[377,573,44,60],[377,645,44,60],[377,717,44,60],[380,828,17,22],[377,861,42,60],[377,933,44,60],[377,1005,41,60],[377,1077,44,61],[377,1149,44,60],[380,1221,38,60],[382,1337,12,22]],
+        [[162,555,43,61],[162,627,44,61],[162,699,44,60],[162,771,44,58],[162,843,44,61],[165,954,17,22],[162,987,44,61],[162,1059,43,61],[165,1136,38,55],[162,1203,44,60],[164,1275,40,60],[162,1347,44,60],[162,1419,40,60],[163,1530,22,21]]
+      ];
+      const layoutBoxes={3:page4Boxes,4:page5Boxes,5:window.preDarianMotionData['06'],6:window.preDarianMotionData['07'],7:window.preDarianMotionData['08'],8:window.preDarianMotionData['09']};
+      const addGlyphScene=(panel,groups)=>{
+        panel.querySelector('.vertical-copy')?.style.setProperty('inset','0');
+        const tl=makeScrollTimeline(panel);
+        const groupStep=.36/Math.max(1,groups.length);
+        groups.forEach((group,groupIndex)=>{
+          const glyphs=splitGlyphs(group);
+          layoutGlyphLine(group,layoutBoxes[scenePanels.indexOf(panel)][groupIndex]);
+          const start=.035+groupIndex*groupStep*.80;
+          tl.fromTo(glyphs,
+            {autoAlpha:0,y:index=>40+index*11,scale:1.20},
+            {autoAlpha:1,y:0,scale:1,duration:.25,stagger:{each:Math.min(.017,.11/Math.max(1,glyphs.length-1))},ease:'power2.out'},
             start
           );
-          tl.to(line,{autoAlpha:0,yPercent:-15-index*1.6,scale:.97,duration:.34,ease:'power2.in'},.62+index*.012);
+          tl.to(glyphs,{autoAlpha:0,y:index=>-(glyphs.length-1-index)*16,scale:.965,duration:.37,ease:'power2.in'},.60);
         });
-        tl.to(tag,{autoAlpha:0,duration:.20,ease:'none'},.70);
       };
-      ['album-intro-1','album-intro-2','album-intro-3','chapter-1','chapter-2','chapter-3'].forEach(id=>addLineScene(scene(id)));
+      [3,4,5].forEach(index=>addGlyphScene(scenePanels[index],[...scenePanels[index].querySelectorAll('.vline')]));
+      [6,7,8].forEach(index=>addGlyphScene(scenePanels[index],[...scenePanels[index].querySelectorAll('.track')]));
 
-      makeEntrance(scene('darian-intro'),inside(scene('darian-intro'),'.darian-title'),{fromY:0,toY:-5,fromScale:2.05,mid:.44,out:.62});
-
-      const addVerseScene=panel=>{
+      const darianVerseBoxes=[
+        {x:1300,y:432,w:41,h:777,steps:10},{x:1122,y:294,w:41,h:918,steps:12},
+        {x:943,y:432,w:40,h:700,steps:9},{x:765,y:576,w:41,h:894,steps:12},
+        {x:587,y:294,w:41,h:991,steps:14},{x:522,y:620,w:40,h:993,steps:14},
+        {x:343,y:432,w:42,h:623,steps:8},{x:164,y:576,w:41,h:629,steps:8}
+      ];
+      const finalVerseBoxes=[
+        {x:1300,y:419,w:40,h:776,steps:10},{x:1111,y:282,w:41,h:920,steps:12},
+        {x:922,y:561,w:40,h:705,steps:9},{x:732,y:418,w:40,h:913,steps:12},
+        {x:542,y:283,w:42,h:992,steps:14},{x:354,y:418,w:41,h:992,steps:14},
+        {x:164,y:282,w:42,h:1344,steps:18}
+      ];
+      const addVerseScene=(panel,boxes,isFinal=false)=>{
         panel.classList.add('darian-verse-panel');
-        const lines=inside(panel,'.vline');
-        const tag=inside(panel,'.section-tag,.brand');
-        const isFinal=panel.dataset.scene==='darian-verse-2';
         if(isFinal)panel.classList.add('darian-verse-final-panel');
+        const copy=panel.querySelector('.vertical-copy');
+        copy.style.inset='0';
+        if(!isFinal){
+          const source=copy.lastElementChild;
+          source.textContent='WU　生活扣进肩里';
+          const second=source.cloneNode(false);
+          second.textContent='用汗水　把辛劳洗净';
+          source.after(second);
+        }
+        const lines=[...panel.querySelectorAll('.vline')];
         const tl=isFinal?gsap.timeline({
           scrollTrigger:{
             trigger:panel,
             start:()=>`top ${panelCrossing(panel)}%`,
             end:'bottom bottom',
-            scrub:.32,
+            scrub:.34,
             invalidateOnRefresh:true
           }
         }).to({}, {duration:1}):makeScrollTimeline(panel);
-        tl.fromTo(tag,{autoAlpha:0},{autoAlpha:1,duration:.16,ease:'none'},.02);
         lines.forEach((line,index)=>{
-          const start=.035+index*(isFinal ? .047 : .038);
+          const box=boxes[index];
+          line.classList.add('verse-positioned');
+          Object.assign(line.style,{
+            left:`${box.x/15}%`,top:`${box.y/20.05}%`,
+            width:`${box.w/15}%`,height:`${box.h/20.05}%`
+          });
+          const glyphCount=[...line.textContent].filter(ch=>ch!=='\n').length||box.steps;
+          line.style.setProperty('--verse-size',`${(box.w/15).toFixed(3)}cqw`);
+          line.style.setProperty('--verse-ls',`${Math.max(0,(box.h/glyphCount-box.w)/15).toFixed(3)}cqw`);
+          const start=(isFinal?.025:.03)+index*(isFinal?.045:.028);
+          const duration=isFinal?.36:.30;
+          const steps=box.steps;
           tl.fromTo(line,
-            {autoAlpha:0,yPercent:18+index*1.4,scale:1.10,clipPath:'inset(0 0 100% 0)'},
-            {autoAlpha:1,yPercent:0,scale:1,clipPath:'inset(0 0 0% 0)',duration:isFinal ? .38 : .34,ease:'power2.out'},
+            {autoAlpha:0,y:(isFinal?58:52)+index*7,scale:isFinal?1.14:1.13,clipPath:'inset(0 0 100% 0)'},
+            {autoAlpha:1,y:0,scale:1,duration,ease:'power2.out'},
             start
           );
-          if(!isFinal)tl.to(line,{autoAlpha:0,yPercent:-16-index*1.7,scale:.97,duration:.30,ease:'power2.in'},.64+index*.012);
+          tl.to(line,{clipPath:'inset(0 0 0% 0)',duration,ease:`steps(${steps})`},start);
+          if(!isFinal)tl.to(line,
+            {autoAlpha:0,y:-62-(lines.length-1-index)*9,scale:.96,duration:.30,ease:'power2.in'},
+            .60+index*.012
+          );
         });
-        if(!isFinal)tl.to(tag,{autoAlpha:0,duration:.18,ease:'none'},.74);
       };
-      addVerseScene(scene('darian-verse-1'));
-      addVerseScene(scene('darian-verse-2'));
+      addVerseScene(scenePanels[10],darianVerseBoxes);
+      addVerseScene(scenePanels[15],finalVerseBoxes,true);
 
-      const addHookScene=panel=>{
-        panel.classList.add('hook-type-test');
-        const chorus=inside(panel,'.chorus');
-        const title=inside(panel,'.chorus h2');
-        const dyd=inside(panel,'.chorus strong');
-        const label=inside(panel,'.chorus p');
-        const tag=inside(panel,'.section-tag,.brand');
-        const tl=makeScrollTimeline(panel);
-        tl.fromTo(tag,{autoAlpha:0},{autoAlpha:1,duration:.12,ease:'none'},.02);
-        tl.fromTo(title,{autoAlpha:0,yPercent:-35,scale:1.85},{autoAlpha:.46,yPercent:-12,scale:1.28,duration:.20,ease:'power2.out'},.04)
-          .fromTo(dyd,{autoAlpha:0,yPercent:-15,scale:1.35},{autoAlpha:.62,yPercent:0,scale:1,duration:.26,ease:'power2.out'},.20)
-          .to(title,{autoAlpha:1,yPercent:0,scale:1,duration:.28,ease:'power3.inOut'},.36)
-          .fromTo(label,{autoAlpha:0,yPercent:32,scale:1.28},{autoAlpha:1,yPercent:0,scale:1,duration:.28,ease:'power2.out'},.42)
-          .to(chorus,{autoAlpha:1,duration:.12,ease:'none'},.54)
-          .to(chorus,{autoAlpha:0,yPercent:-10,scale:.985,duration:.30,ease:'power2.in'},.72)
-          .to(tag,{autoAlpha:0,duration:.18,ease:'none'},.78);
+      const darianPanel=scenePanels[9];
+      const darianTitle=darianPanel.querySelector('.darian-title');
+      const titleText=[...darianTitle.childNodes].find(node=>node.nodeType===Node.TEXT_NODE);
+      const placeholder=document.createElement('span');
+      placeholder.className='darian-title-placeholder';
+      placeholder.textContent='达里安';
+      titleText.replaceWith(placeholder);
+      const darianBase=makeStage(darianPanel,['.darian-title']);
+      addBasicScene(darianPanel,darianBase);
+      const makeDarianWord=className=>{
+        const word=document.createElement('p');
+        word.className=`darian-live-word ${className}`;
+        [...'达里安'].forEach(character=>{
+          const plane=document.createElement('span');
+          plane.className='darian-glyph-plane';
+          const artboard=document.createElement('span');
+          artboard.className='live-artboard darian-glyph-artboard';
+          const glyph=document.createElement('span');
+          glyph.className='live-glyph';
+          glyph.textContent=character;
+          artboard.append(glyph);
+          plane.append(artboard);
+          word.append(plane);
+        });
+        darianPanel.querySelector('.frame').append(word);
+        return [...word.children];
       };
-      ['darian-wuwang','darian-jianchi','darian-fangqi','darian-huozhe'].forEach(id=>addHookScene(scene(id)));
+      const darianMains=makeDarianWord('darian-main-word');
+      const darianGhosts=makeDarianWord('darian-ghost-word');
+      darianGhosts[0].parentElement.setAttribute('aria-hidden','true');
+      const darianFrom=[{x:0,y:-28.05},{x:54.4,y:-1.4},{x:0,y:15.1}];
+      const darianTl=makeScrollTimeline(darianPanel);
+      darianMains.forEach((glyph,index)=>darianTl.fromTo(glyph,
+        {autoAlpha:0,xPercent:darianFrom[index].x*1.35,yPercent:darianFrom[index].y*1.35,scale:2.25},
+        {autoAlpha:1,xPercent:0,yPercent:0,scale:1,duration:.53,ease:'power2.out'},
+        .025+index*.03
+      ));
+      darianGhosts.forEach((glyph,index)=>darianTl.fromTo(glyph,
+        {autoAlpha:.20,xPercent:darianFrom[index].x*1.35,yPercent:darianFrom[index].y*1.35,scale:6.5},
+        {autoAlpha:0,xPercent:0,yPercent:0,scale:2.1,duration:.50,ease:'power2.out'},
+        .025+index*.03
+      ));
+      darianMains.forEach((glyph,index)=>darianTl.to(glyph,
+        {autoAlpha:0,xPercent:darianFrom[index].x*.48,yPercent:darianFrom[index].y*.48,scale:.92,duration:.36,ease:'power2.in'},
+        .58+index*.02
+      ));
+
+      const finalTitleBox={x1:542,y1:699,x2:961,y2:861};
+      const hookFlashPools={
+        wuwang:['劳作','收起','耕地','农民','农夫','土地','田野','忘记','道理','矛盾','洗礼','无需','来临','一贯','随形','如影','献祭','自己','山谷','夜里','枯萎','新生','歌剧','劳苦','希望','诗句','生活','汗水','辛劳','洗净','文明','远景','优先','出局','功成','踪迹','等候','泡影','车间','铆钉','手臂','无心','风景','困住','原地','城市','广厦','眩目','山里','走入','山林','人们','丢掉','一阵','找回'],
+        jianchi:['再走一步','继续劳作','走过田野','穿过山谷','抬起手臂','守住呼吸','等候天明','捡起工具','擦净汗水','扛过风雨','走进山林','越过长夜','看见晨光','踏过泥泞','拾起种子','翻开土地','点亮灯火','留住体温','迎着冷风','顺着河流','迈出门口','穿过车间','握紧双手','唤醒身体','守到日出','等到春天','越过围栏','沿路前行','走出城市','回到田间','扶起麦穗','推开大门','继续呼喊','再唱一遍','留下脚印','保持清醒','看向远处','走近人群','迎接雨水','把灯点亮','把路走完','把手握紧','把心放稳','让风吹过','让雨落下','让船靠岸','让鸟飞过','让草生长','让河奔流','让夜过去','让光进来','让人醒来','让梦继续','让歌响起','仍向前走'],
+        fangqi:['风吹不散','雨打不退','长夜未尽','山路未完','河流未止','灯火未熄','种子未眠','麦穗未倒','鸟群未散','心跳未停','呼吸还在','脚步还在','双手还在','目光还在','田野还在','山谷还在','晨光将至','春天将至','大门将开','河岸将近','天色将明','风声渐远','雨声渐轻','泥土回暖','草木重生','云层散开','远方显现','道路延伸','火光摇曳','人群汇合','城市苏醒','车间开灯','铁轨向前','船只离岸','手臂抬起','脊背挺直','眼睛睁开','名字留下','歌声继续','回答仍在','感受仍在','爱意仍在','故乡仍在','土地仍在','记忆仍在','故事未完','旅程未完','远征未完','歌曲未完','今天未完','明天会来','我们还在','再看一眼','再说一遍','再等一会'],
+        huozhe:['呼吸','心跳','晨光','雨水','泥土','草叶','飞鸟','风声','河流','树影','云层','脚步','体温','眼泪','笑声','拥抱','醒来','睡去','行走','停留','回望','相爱','创造','感受','回答','火光','灯火','春天','夏夜','秋风','冬雪','麦穗','种子','河岸','远方','故乡','名字','歌声','目光','双手','脊背','皮肤','血液','心脏','清晨','黄昏','日出','月光','星辰','海面','旷野','道路','归来','出发','此刻']
+      };
+      const hookConfigs=[
+        {panel:scenePanels[11],next:scenePanels[12],label:'勿亡',flashWords:hookFlashPools.wuwang,rows:[{x:.292,y:.115,scale:1.40},{x:.435,y:.236,scale:1.85},{x:.413,y:.374,scale:2.25}]},
+        {panel:scenePanels[12],next:scenePanels[13],label:'坚持下去',flashWords:hookFlashPools.jianchi,rows:[{x:.698,y:.116,scale:1.40},{x:.535,y:.238,scale:1.85},{x:.375,y:.374,scale:2.25}]},
+        {panel:scenePanels[13],next:scenePanels[14],label:'不要放弃',flashWords:hookFlashPools.fangqi,rows:[{x:.280,y:.140,scale:1.40},{x:.650,y:.255,scale:1.85},{x:.450,y:.395,scale:2.25}]},
+        {panel:scenePanels[14],next:scenePanels[15],label:'活着',flashWords:hookFlashPools.huozhe,rows:[{x:.580,y:.120,scale:1.40},{x:.320,y:.250,scale:1.85},{x:.530,y:.390,scale:2.25}]}
+      ];
+      const titleCenterMetrics=frame=>{
+        const frameRect=frame.getBoundingClientRect();
+        const artScale=Math.min(frameRect.width/1500,frameRect.height/2005);
+        const offsetX=(frameRect.width-1500*artScale)/2;
+        const offsetY=(frameRect.height-2005*artScale)/2;
+        const targetX=offsetX+(finalTitleBox.x1+finalTitleBox.x2)/2*artScale;
+        const targetY=offsetY+(finalTitleBox.y1+finalTitleBox.y2)/2*artScale;
+        return {frameRect,targetX,targetY};
+      };
+      const hookRowMetrics=(frame,start)=>{
+        const {frameRect,targetX,targetY}=titleCenterMetrics(frame);
+        return {x:frameRect.width*start.x-targetX,y:frameRect.height*start.y-targetY};
+      };
+      const makeHookScene=(panel,label,flashWords)=>{
+        const frame=panel.querySelector('.frame');
+        const base=panel.querySelector('.chorus');
+        panel.classList.add('hook-type-test');
+        gsap.set(base,{autoAlpha:0});
+        const scene=document.createElement('div');
+        scene.className='hook-type-scene';
+        const typedWords=[1,2,3].map(index=>{
+          const word=document.createElement('p');
+          word.className=`hook-type-word hook-type-word-${index}`;
+          [...'达里安'].forEach(text=>{
+            const glyph=document.createElement('span');
+            glyph.className='hook-type-glyph';
+            glyph.textContent=text;
+            word.append(glyph);
+          });
+          scene.append(word);
+          return word;
+        });
+        const dyd=document.createElement('p');
+        dyd.className='hook-type-dyd';
+        dyd.textContent='DON’T YOU DIE';
+        scene.append(dyd);
+        const cycle=document.createElement('div');
+        cycle.className='hook-type-cycle';
+        [...flashWords,label].forEach(text=>{
+          const word=document.createElement('span');
+          word.textContent=text;
+          cycle.append(word);
+        });
+        scene.append(cycle);
+        frame.append(scene);
+        return {frame,typedWords,dyd,cycle};
+      };
+      hookConfigs.forEach(config=>{
+        const state=makeHookScene(config.panel,config.label,config.flashWords);
+        const tl=gsap.timeline({
+          scrollTrigger:{
+            trigger:config.panel,
+            endTrigger:config.next,
+            start:()=>`top ${panelCrossing(config.panel)}%`,
+            end:()=>`top ${panelCrossing(config.next)}%`,
+            scrub:.28,
+            invalidateOnRefresh:true
+          }
+        }).to({}, {duration:1});
+        state.typedWords.forEach((word,wordIndex)=>{
+          const glyphs=[...word.children];
+          const start=.035+wordIndex*.055;
+          const row=config.rows[wordIndex];
+          tl.set(word,{xPercent:-50,yPercent:-50,x:()=>hookRowMetrics(state.frame,row).x,y:()=>hookRowMetrics(state.frame,row).y,scale:row.scale,autoAlpha:1},0);
+          tl.fromTo(glyphs,{autoAlpha:0},{autoAlpha:.38,duration:.018,stagger:.028,ease:'steps(1)'},start);
+        });
+        tl.fromTo(state.dyd,{autoAlpha:0,letterSpacing:'9vw'},{autoAlpha:.32,letterSpacing:'9vw',duration:.025,ease:'steps(1)'},.205);
+        state.typedWords.forEach((word,index)=>{
+          const glyphs=[...word.children];
+          tl.to(word,{x:0,y:0,scale:1,duration:.29,ease:'power3.inOut'},.35+index*.012);
+          tl.to(glyphs,{autoAlpha:index===2?1:.55,duration:.29,ease:'power3.inOut'},.35+index*.012);
+          if(index<2)tl.to(word,{autoAlpha:0,duration:.075,ease:'power1.out'},.57+index*.012);
+        });
+        tl.to(state.dyd,{letterSpacing:'0em',autoAlpha:1,duration:.34,ease:'power3.inOut'},.32);
+        const cycleSpans=[...state.cycle.children];
+        const cycleStart=.035,cycleEnd=.685,cycleStep=(cycleEnd-cycleStart)/(cycleSpans.length-1);
+        cycleSpans.forEach((word,index)=>{
+          const at=cycleStart+index*cycleStep;
+          if(index)tl.set(cycleSpans[index-1],{autoAlpha:0},at);
+          tl.set(word,{autoAlpha:1},at);
+        });
+      });
 
       ScrollTrigger.create({
-        trigger:scene('darian-verse-2'),
+        trigger:scenePanels.at(-1),
         start:'top center',
         onToggle:self=>document.body.classList.toggle('at-end',self.isActive)
       });
