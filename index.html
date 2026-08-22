@@ -572,12 +572,18 @@
         }
         textNodes.forEach(node=>{
           const fragment=document.createDocumentFragment();
-          [...node.nodeValue].forEach(character=>{
+          const characters=[...node.nodeValue];
+          for(let index=0;index<characters.length;index++){
+            let character=characters[index];
+            if(character==='。'&&characters[index+1]==='」'){
+              character+='」';
+              index++;
+            }
             const glyph=document.createElement('span');
             glyph.className='live-glyph';
             glyph.textContent=character;
             fragment.append(glyph);
-          });
+          }
           node.replaceWith(fragment);
         });
         return [...element.querySelectorAll('.live-glyph')];
