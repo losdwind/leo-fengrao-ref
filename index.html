@@ -342,8 +342,8 @@
 </head>
 <body>
   <div class="film" aria-hidden="true">
-    <video class="film-grass" autoplay muted loop playsinline preload="metadata" poster="./scene-assets/home-still.jpg"><source src="./scene-assets/video-next/grass-1080p-h264-hq.mp4" type="video/mp4"></video>
-    <video class="film-single" autoplay muted loop playsinline preload="metadata"><source src="./scene-assets/video-next/building-1080p-h264.mp4" type="video/mp4"></video>
+    <video class="film-grass" autoplay muted loop playsinline preload="metadata" poster="./scene-assets/home-still.jpg"><source src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/05fb49605001834816621742566/u2XduuVvyLYA.mp4" type="video/mp4"></video>
+    <video class="film-single" autoplay muted loop playsinline preload="none" data-src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/805a72245001834816572932474/EVVfh6rU89oA.mp4"></video>
   </div>
   <audio class="album-audio" preload="metadata" loop src="./scene-assets/album-intro.mp3"></audio>
   <audio class="darian-audio" preload="metadata" loop src="./scene-assets/darian.mp3"></audio>
@@ -507,6 +507,13 @@
 
       const grassVideo=document.querySelector('.film-grass');
       const singleVideo=document.querySelector('.film-single');
+      let singleVideoReady=false;
+      const ensureSingleVideo=()=>{
+        if(singleVideoReady)return;
+        singleVideo.src=singleVideo.dataset.src;
+        singleVideo.load();
+        singleVideoReady=true;
+      };
       const albumAudio=document.querySelector('.album-audio');
       const darianAudio=document.querySelector('.darian-audio');
       let audioUnlocked=false;
@@ -529,8 +536,8 @@
           end:()=>`top ${panelCrossing(scenePanels[6])}%`,
           scrub:.32,
           invalidateOnRefresh:true,
-          onEnter:()=>{singleVideo.currentTime=0;singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
-          onEnterBack:()=>{singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
+          onEnter:()=>{ensureSingleVideo();singleVideo.currentTime=0;singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
+          onEnterBack:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
           onLeaveBack:()=>{singleVideo.pause();activateAudio(albumAudio)}
         }
       }).to({}, {duration:1});
