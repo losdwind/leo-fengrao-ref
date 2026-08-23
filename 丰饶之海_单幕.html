@@ -342,12 +342,13 @@
 </head>
 <body>
   <div class="film" aria-hidden="true">
-    <video class="film-grass" autoplay muted loop playsinline preload="metadata" poster="./scene-assets/home-still.jpg"><source src="./scene-assets/album-grass-mobile.mp4" type="video/mp4"></video>
-    <video class="film-single" autoplay muted loop playsinline preload="metadata"><source src="./scene-assets/building-mobile.mp4" type="video/mp4"></video>
+    <video class="film-grass" autoplay muted loop playsinline preload="metadata" poster="./scene-assets/home-still.jpg"><source src="./scene-assets/video-next/grass-1080p-h264-hq.mp4" type="video/mp4"></video>
+    <video class="film-single" autoplay muted loop playsinline preload="metadata"><source src="./scene-assets/video-next/building-1080p-h264.mp4" type="video/mp4"></video>
   </div>
+  <audio class="album-audio" preload="metadata" loop src="./scene-assets/album-intro.mp3"></audio>
+  <audio class="darian-audio" preload="metadata" loop src="./scene-assets/darian.mp3"></audio>
   <main>
     <section class="panel" aria-label="丰饶之海封面"><div class="frame">
-      <div class="brand">THE SEA<br>OF FERTILITY</div>
       <div class="art-title-plane cover-art" role="img" aria-label="丰饶之海">
         <img class="cover-art-left" src="./scene-assets/psd-overlays/01.png" alt="" aria-hidden="true">
         <img class="cover-art-right" src="./scene-assets/psd-overlays/01.png" alt="" aria-hidden="true">
@@ -356,7 +357,6 @@
       <h1 class="cover-thesis reveal" style="--delay:.2s">在匮乏中抵达丰饶<small>ARRIVING AT ABUNDANCE<br>THROUGH SCARCITY</small></h1>
     </div></section>
     <section class="panel" aria-label="李奥"><div class="frame">
-      <div class="brand">THE SEA<br>OF FERTILITY</div>
       <img class="title-image artist-mark reveal" src="./scene-assets/home-artist.png" alt="李奥">
       <p class="artist-caption reveal" style="--delay:.15s">个人首张全长概念专辑<small>DEBUT FULL-LENGTH<br>CONCEPT ALBUM</small></p>
     </div></section>
@@ -468,6 +468,14 @@
       gsap.registerPlugin(ScrollTrigger);
       gsap.defaults({overwrite:'auto'});
 
+      const main=document.querySelector('main');
+      const finalDarian=[...main.querySelectorAll('.panel')].find(panel=>panel.getAttribute('aria-label')==='达里安歌词第二段');
+      const chapterPanels=['第一章 出发','第二章 发现','第三章 融解'].map(label=>
+        [...main.querySelectorAll('.panel')].find(panel=>panel.getAttribute('aria-label')===label)
+      );
+      let chapterAnchor=finalDarian;
+      chapterPanels.forEach(panel=>{chapterAnchor.after(panel);chapterAnchor=panel});
+
       const scenePanels=[...document.querySelectorAll('.panel')];
       scenePanels.forEach(panel=>{
         const frame=panel.querySelector('.frame');
@@ -499,17 +507,31 @@
 
       const grassVideo=document.querySelector('.film-grass');
       const singleVideo=document.querySelector('.film-single');
+      const albumAudio=document.querySelector('.album-audio');
+      const darianAudio=document.querySelector('.darian-audio');
+      let audioUnlocked=false;
+      let currentAudio=null;
+      const activateAudio=audio=>{
+        if(!audioUnlocked)return;
+        if(currentAudio===audio){audio.play().catch(()=>{});return}
+        const outgoing=currentAudio;
+        currentAudio=audio;
+        audio.volume=0;
+        audio.play().catch(()=>{});
+        gsap.to(audio,{volume:1,duration:.9,ease:'power1.inOut'});
+        if(outgoing)gsap.to(outgoing,{volume:0,duration:.9,ease:'power1.inOut',onComplete:()=>outgoing.pause()});
+      };
       gsap.set(singleVideo,{autoAlpha:0});
       const singleVideoTl=gsap.timeline({
         scrollTrigger:{
-          trigger:scenePanels[9],
+          trigger:scenePanels[6],
           start:'top 92%',
-          end:()=>`top ${panelCrossing(scenePanels[9])}%`,
+          end:()=>`top ${panelCrossing(scenePanels[6])}%`,
           scrub:.32,
           invalidateOnRefresh:true,
-          onEnter:()=>{singleVideo.currentTime=0;singleVideo.play().catch(()=>{})},
-          onEnterBack:()=>singleVideo.play().catch(()=>{}),
-          onLeaveBack:()=>singleVideo.pause()
+          onEnter:()=>{singleVideo.currentTime=0;singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
+          onEnterBack:()=>{singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
+          onLeaveBack:()=>{singleVideo.pause();activateAudio(albumAudio)}
         }
       }).to({}, {duration:1});
       singleVideoTl.to(grassVideo,{autoAlpha:0,duration:1,ease:'none'},0)
@@ -578,6 +600,11 @@
             if(character==='。'&&characters[index+1]==='」'){
               character+='」';
               index++;
+            }else if(character==='#'&&/\d/.test(characters[index+1]||'')){
+              while(/\d/.test(characters[index+1]||''))character+=characters[++index];
+            }else if(character==='L'&&characters[index+1]==='i'){
+              character+='i';
+              index++;
             }
             const glyph=document.createElement('span');
             glyph.className='live-glyph';
@@ -620,7 +647,7 @@
         [[377,435,44,54],[377,505,44,56],[377,573,44,60],[377,645,44,60],[377,717,44,60],[380,828,17,22],[377,861,42,60],[377,933,44,60],[377,1005,41,60],[377,1077,44,61],[377,1149,44,60],[380,1221,38,60],[382,1337,12,22]],
         [[162,555,43,61],[162,627,44,61],[162,699,44,60],[162,771,44,58],[162,843,44,61],[165,954,17,22],[162,987,44,61],[162,1059,43,61],[165,1136,38,55],[162,1203,44,60],[164,1275,40,60],[162,1347,44,60],[162,1419,40,60],[163,1530,22,21]]
       ];
-      const layoutBoxes={3:page4Boxes,4:page5Boxes,5:window.preDarianMotionData['06'],6:window.preDarianMotionData['07'],7:window.preDarianMotionData['08'],8:window.preDarianMotionData['09']};
+      const layoutBoxes={3:page4Boxes,4:page5Boxes,5:window.preDarianMotionData['06'],13:window.preDarianMotionData['07'],14:window.preDarianMotionData['08'],15:window.preDarianMotionData['09']};
       const addGlyphScene=(panel,groups)=>{
         panel.querySelector('.vertical-copy')?.style.setProperty('inset','0');
         const tl=makeScrollTimeline(panel);
@@ -638,7 +665,7 @@
         });
       };
       [3,4,5].forEach(index=>addGlyphScene(scenePanels[index],[...scenePanels[index].querySelectorAll('.vline')]));
-      [6,7,8].forEach(index=>addGlyphScene(scenePanels[index],[...scenePanels[index].querySelectorAll('.track')]));
+      [13,14,15].forEach(index=>addGlyphScene(scenePanels[index],[...scenePanels[index].querySelectorAll('.track')]));
 
       const darianVerseBoxes=[
         {x:1300,y:432,w:41,h:777,steps:10},{x:1122,y:294,w:41,h:918,steps:12},
@@ -650,7 +677,7 @@
         {x:1300,y:419,w:40,h:776,steps:10},{x:1111,y:282,w:41,h:920,steps:12},
         {x:922,y:561,w:40,h:705,steps:9},{x:732,y:418,w:40,h:913,steps:12},
         {x:542,y:283,w:42,h:992,steps:14},{x:354,y:418,w:41,h:992,steps:14},
-        {x:164,y:282,w:42,h:1344,steps:18}
+        {x:164,y:282,w:42,h:1590,rhythmH:1344,steps:19}
       ];
       const addVerseScene=(panel,boxes,isFinal=false)=>{
         panel.classList.add('darian-verse-panel');
@@ -683,7 +710,8 @@
           });
           const glyphCount=[...line.textContent].filter(ch=>ch!=='\n').length||box.steps;
           line.style.setProperty('--verse-size',`${(box.w/15).toFixed(3)}cqw`);
-          line.style.setProperty('--verse-ls',`${Math.max(0,(box.h/glyphCount-box.w)/15).toFixed(3)}cqw`);
+          const rhythmH=box.rhythmH??box.h;
+          line.style.setProperty('--verse-ls',`${Math.max(0,(rhythmH/glyphCount-box.w)/15).toFixed(3)}cqw`);
           const start=(isFinal?.025:.03)+index*(isFinal?.045:.028);
           const duration=isFinal?.36:.30;
           const steps=box.steps;
@@ -699,10 +727,10 @@
           );
         });
       };
-      addVerseScene(scenePanels[10],darianVerseBoxes);
-      addVerseScene(scenePanels[15],finalVerseBoxes,true);
+      addVerseScene(scenePanels[7],darianVerseBoxes);
+      addVerseScene(scenePanels[12],finalVerseBoxes,true);
 
-      const darianPanel=scenePanels[9];
+      const darianPanel=scenePanels[6];
       const darianTitle=darianPanel.querySelector('.darian-title');
       const titleText=[...darianTitle.childNodes].find(node=>node.nodeType===Node.TEXT_NODE);
       const placeholder=document.createElement('span');
@@ -757,10 +785,10 @@
         huozhe:['呼吸','心跳','晨光','雨水','泥土','草叶','飞鸟','风声','河流','树影','云层','脚步','体温','眼泪','笑声','拥抱','醒来','睡去','行走','停留','回望','相爱','创造','感受','回答','火光','灯火','春天','夏夜','秋风','冬雪','麦穗','种子','河岸','远方','故乡','名字','歌声','目光','双手','脊背','皮肤','血液','心脏','清晨','黄昏','日出','月光','星辰','海面','旷野','道路','归来','出发','此刻']
       };
       const hookConfigs=[
-        {panel:scenePanels[11],next:scenePanels[12],label:'勿亡',flashWords:hookFlashPools.wuwang,rows:[{x:.292,y:.115,scale:1.40},{x:.435,y:.236,scale:1.85},{x:.413,y:.374,scale:2.25}]},
-        {panel:scenePanels[12],next:scenePanels[13],label:'坚持下去',flashWords:hookFlashPools.jianchi,rows:[{x:.698,y:.116,scale:1.40},{x:.535,y:.238,scale:1.85},{x:.375,y:.374,scale:2.25}]},
-        {panel:scenePanels[13],next:scenePanels[14],label:'不要放弃',flashWords:hookFlashPools.fangqi,rows:[{x:.280,y:.140,scale:1.40},{x:.650,y:.255,scale:1.85},{x:.450,y:.395,scale:2.25}]},
-        {panel:scenePanels[14],next:scenePanels[15],label:'活着',flashWords:hookFlashPools.huozhe,rows:[{x:.580,y:.120,scale:1.40},{x:.320,y:.250,scale:1.85},{x:.530,y:.390,scale:2.25}]}
+        {panel:scenePanels[8],next:scenePanels[9],label:'勿亡',flashWords:hookFlashPools.wuwang,rows:[{x:.292,y:.115,scale:1.40},{x:.435,y:.236,scale:1.85},{x:.413,y:.374,scale:2.25}]},
+        {panel:scenePanels[9],next:scenePanels[10],label:'坚持下去',flashWords:hookFlashPools.jianchi,rows:[{x:.698,y:.116,scale:1.40},{x:.535,y:.238,scale:1.85},{x:.375,y:.374,scale:2.25}]},
+        {panel:scenePanels[10],next:scenePanels[11],label:'不要放弃',flashWords:hookFlashPools.fangqi,rows:[{x:.280,y:.140,scale:1.40},{x:.650,y:.255,scale:1.85},{x:.450,y:.395,scale:2.25}]},
+        {panel:scenePanels[11],next:scenePanels[12],label:'活着',flashWords:hookFlashPools.huozhe,rows:[{x:.580,y:.120,scale:1.40},{x:.320,y:.250,scale:1.85},{x:.530,y:.390,scale:2.25}]}
       ];
       const titleCenterMetrics=frame=>{
         const frameRect=frame.getBoundingClientRect();
@@ -854,7 +882,11 @@
       document.fonts?.ready?.then(()=>ScrollTrigger.refresh());
       requestAnimationFrame(()=>ScrollTrigger.refresh());
       const videos=[...document.querySelectorAll('.film video')];
-      addEventListener('pointerdown',()=>videos.forEach(video=>video.play().catch(()=>{})),{once:true,passive:true});
+      addEventListener('pointerdown',()=>{
+        audioUnlocked=true;
+        videos.forEach(video=>video.play().catch(()=>{}));
+        activateAudio(scrollY>=scenePanels[6].offsetTop-innerHeight*.55?darianAudio:albumAudio);
+      },{once:true,passive:true});
     })();
   </script>
 </body>
