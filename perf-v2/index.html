@@ -59,7 +59,8 @@
     .overview-art-bottom { clip-path:inset(22.84% 70.67% 52.12% 2.67%); }
     .overview-art-en { position:absolute; top:21.1%; left:6%; z-index:3; font:400 clamp(.53rem,1.55vw,.72rem)/.88 Arial,sans-serif; letter-spacing:-.035em; }
     .live-content-stage { transform-origin:center; }
-    .live-glyph { display:inline-block; will-change:transform,opacity; }
+    .live-glyph { display:inline-block; will-change:auto; }
+    .panel.is-motion-near .live-glyph { will-change:transform,opacity; }
     .darian-live-word { position:absolute; left:8%; bottom:24.5%; z-index:3; margin:0; writing-mode:vertical-rl; color:var(--ink); font-size:clamp(3.2rem,15vw,6rem); font-weight:300; letter-spacing:.09em; line-height:1; pointer-events:none; }
     .darian-live-word .live-glyph { display:inline-block; }
     .darian-ghost-word { z-index:2; }
@@ -502,6 +503,14 @@
         [...frame.children].forEach(node=>artboard.append(node));
         frame.append(artboard);
       });
+      if('IntersectionObserver'in window){
+        const motionLayerObserver=new IntersectionObserver(entries=>{
+          entries.forEach(entry=>entry.target.classList.toggle('is-motion-near',entry.isIntersecting));
+        },{rootMargin:'100% 0px'});
+        scenePanels.forEach(panel=>motionLayerObserver.observe(panel));
+      }else{
+        scenePanels.forEach(panel=>panel.classList.add('is-motion-near'));
+      }
       const panelCrossing=panel=>{
         const marker=panel.querySelector('.section-tag,.brand');
         if(!marker)return 46;
@@ -1042,11 +1051,20 @@
         start:'top center',
         onToggle:self=>document.body.classList.toggle('at-end',self.isActive)
       });
-      const refreshStableState=()=>{ScrollTrigger.refresh();ScrollTrigger.update();scheduleMediaSync()};
+      let stableRefreshFrame=0;
+      const refreshStableState=()=>{
+        if(stableRefreshFrame)return;
+        stableRefreshFrame=requestAnimationFrame(()=>{
+          stableRefreshFrame=0;
+          ScrollTrigger.refresh();
+          ScrollTrigger.update();
+          scheduleMediaSync();
+        });
+      };
       addEventListener('load',refreshStableState,{once:true});
       document.fonts?.ready?.then(refreshStableState);
       requestAnimationFrame(refreshStableState);
-      addEventListener('pageshow',refreshStableState);
+      addEventListener('pageshow',event=>{if(event.persisted)refreshStableState()});
       addEventListener('orientationchange',()=>setTimeout(refreshStableState,250),{passive:true});
       const audios=[albumAudio,darianAudio];
       document.addEventListener('visibilitychange',()=>{
