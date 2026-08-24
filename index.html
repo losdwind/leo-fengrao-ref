@@ -342,8 +342,8 @@
 </head>
 <body>
   <div class="film" aria-hidden="true">
-    <video class="film-grass" autoplay muted loop playsinline preload="metadata" poster="./scene-assets/home-still.jpg"><source src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/05fb49605001834816621742566/u2XduuVvyLYA.mp4" type="video/mp4"></video>
-    <video class="film-single" autoplay muted loop playsinline preload="none" data-src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/805a72245001834816572932474/EVVfh6rU89oA.mp4"></video>
+    <video class="film-grass" autoplay muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="metadata" poster="./scene-assets/home-still.jpg"><source src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/05fb49605001834816621742566/u2XduuVvyLYA.mp4" type="video/mp4"></video>
+    <video class="film-single" autoplay muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="none" poster="./scene-assets/building-still.jpg" data-src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/805a72245001834816572932474/EVVfh6rU89oA.mp4"></video>
   </div>
   <audio class="album-audio" preload="metadata" loop src="./scene-assets/album-intro.mp3"></audio>
   <audio class="darian-audio" preload="metadata" loop src="./scene-assets/darian.mp3"></audio>
@@ -466,6 +466,7 @@
     (()=>{
       if(!window.gsap||!window.ScrollTrigger)return;
       gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.config({ignoreMobileResize:true});
       gsap.defaults({overwrite:'auto'});
 
       const main=document.querySelector('main');
@@ -488,7 +489,7 @@
         const marker=panel.querySelector('.section-tag,.brand');
         if(!marker)return 46;
         const center=marker.offsetTop+marker.offsetHeight/2;
-        return 50-center/(innerHeight||1)*100;
+        return 50-center/(panel.offsetHeight||innerHeight||1)*100;
       };
       const makeScrollTimeline=panel=>{
         const panelIndex=scenePanels.indexOf(panel);
@@ -511,7 +512,9 @@
       const ensureSingleVideo=()=>{
         if(singleVideoReady)return;
         singleVideo.src=singleVideo.dataset.src;
+        singleVideo.preload='auto';
         singleVideo.load();
+        singleVideo.play().catch(()=>{});
         singleVideoReady=true;
       };
       const albumAudio=document.querySelector('.album-audio');
@@ -520,7 +523,11 @@
       let currentAudio=null;
       const activateAudio=audio=>{
         if(!audioUnlocked)return;
-        if(currentAudio===audio){audio.play().catch(()=>{});return}
+        if(currentAudio===audio){
+          if(audio.paused)audio.play().catch(()=>{});
+          return;
+        }
+        gsap.killTweensOf([albumAudio,darianAudio]);
         const outgoing=currentAudio;
         currentAudio=audio;
         audio.volume=0;
@@ -530,25 +537,35 @@
       };
       gsap.set(singleVideo,{autoAlpha:0});
       ScrollTrigger.create({
-        trigger:scenePanels[6],
+        trigger:scenePanels[4],
         start:'top 100%',
-        onEnter:ensureSingleVideo,
-        onEnterBack:ensureSingleVideo
+        onEnter:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{})},
+        onEnterBack:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{})}
       });
-      const singleVideoTl=gsap.timeline({
+      let singleVideoTl=gsap.timeline({
         scrollTrigger:{
           trigger:scenePanels[6],
           start:'top 18%',
           end:'top -2%',
           scrub:.32,
-          invalidateOnRefresh:true,
-          onEnter:()=>{ensureSingleVideo();singleVideo.currentTime=0;singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
-          onEnterBack:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{});activateAudio(darianAudio)},
-          onLeaveBack:()=>{singleVideo.pause();activateAudio(albumAudio)}
+          invalidateOnRefresh:true
         }
       }).to({}, {duration:1});
       singleVideoTl.to(grassVideo,{autoAlpha:0,duration:1,ease:'none'},0)
         .fromTo(singleVideo,{autoAlpha:0},{autoAlpha:1,duration:1,ease:'none'},0);
+      const wantsDarianMedia=()=>scrollY>=singleVideoTl.scrollTrigger.start;
+      const syncMediaState=()=>{
+        if(scrollY>=scenePanels[4].offsetTop-(innerHeight||1))ensureSingleVideo();
+        if(singleVideoReady&&singleVideo.paused&&document.visibilityState==='visible')singleVideo.play().catch(()=>{});
+        if(audioUnlocked)activateAudio(wantsDarianMedia()?darianAudio:albumAudio);
+      };
+      let mediaSyncFrame=0;
+      const scheduleMediaSync=()=>{
+        if(mediaSyncFrame)return;
+        mediaSyncFrame=requestAnimationFrame(()=>{mediaSyncFrame=0;syncMediaState()});
+      };
+      addEventListener('scroll',scheduleMediaSync,{passive:true});
+      addEventListener('scrollend',()=>{ScrollTrigger.update();syncMediaState()},{passive:true});
 
       const makeStage=(panel,selectors)=>{
         const frame=panel.querySelector('.frame');
@@ -892,15 +909,33 @@
         start:'top center',
         onToggle:self=>document.body.classList.toggle('at-end',self.isActive)
       });
-      addEventListener('load',()=>ScrollTrigger.refresh(),{once:true});
-      document.fonts?.ready?.then(()=>ScrollTrigger.refresh());
-      requestAnimationFrame(()=>ScrollTrigger.refresh());
+      const refreshStableState=()=>{ScrollTrigger.refresh();ScrollTrigger.update();scheduleMediaSync()};
+      addEventListener('load',refreshStableState,{once:true});
+      document.fonts?.ready?.then(refreshStableState);
+      requestAnimationFrame(refreshStableState);
+      addEventListener('pageshow',refreshStableState);
+      addEventListener('orientationchange',()=>setTimeout(refreshStableState,250),{passive:true});
+      document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='visible')refreshStableState();
+      });
       const videos=[...document.querySelectorAll('.film video')];
-      addEventListener('pointerdown',()=>{
+      const unlockEvents=['pointerdown','touchstart','click'];
+      const unlockMedia=()=>{
+        if(audioUnlocked)return;
         audioUnlocked=true;
+        unlockEvents.forEach(type=>removeEventListener(type,unlockMedia));
         videos.forEach(video=>video.play().catch(()=>{}));
-        activateAudio(scrollY>=scenePanels[6].offsetTop-innerHeight*.55?darianAudio:albumAudio);
-      },{once:true,passive:true});
+        [albumAudio,darianAudio].forEach(audio=>{
+          audio.volume=0;
+          const primed=audio.play();
+          primed?.then(()=>{
+            if(audio!==currentAudio){audio.pause();audio.currentTime=0}
+          }).catch(()=>{});
+        });
+        currentAudio=null;
+        syncMediaState();
+      };
+      unlockEvents.forEach(type=>addEventListener(type,unlockMedia,{passive:true}));
     })();
   </script>
 </body>
