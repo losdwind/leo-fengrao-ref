@@ -733,15 +733,18 @@
         }).to({}, {duration:1}):makeScrollTimeline(panel);
         lines.forEach((line,index)=>{
           const box=boxes[index];
+          const verseFontScale=1.38;
+          const visualWidth=box.w*verseFontScale;
+          const centeredX=box.x-(visualWidth-box.w)/2;
           line.classList.add('verse-positioned');
           Object.assign(line.style,{
-            left:`${box.x/15}%`,top:`${box.y/20.05}%`,
-            width:`${box.w/15}%`,height:`${box.h/20.05}%`
+            left:`${centeredX/15}%`,top:`${box.y/20.05}%`,
+            width:`${visualWidth/15}%`,height:`${box.h/20.05}%`
           });
           const glyphCount=[...line.textContent].filter(ch=>ch!=='\n').length||box.steps;
-          line.style.setProperty('--verse-size',`${(box.w/15).toFixed(3)}cqw`);
+          line.style.setProperty('--verse-size',`${(visualWidth/15).toFixed(3)}cqw`);
           const rhythmH=box.rhythmH??box.h;
-          line.style.setProperty('--verse-ls',`${Math.max(0,(rhythmH/glyphCount-box.w)/15).toFixed(3)}cqw`);
+          line.style.setProperty('--verse-ls',`${Math.max(0,(rhythmH/glyphCount-visualWidth)/15).toFixed(3)}cqw`);
           const start=(isFinal?.025:.03)+index*(isFinal?.045:.028);
           const duration=isFinal?.36:.30;
           const steps=box.steps;
