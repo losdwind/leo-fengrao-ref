@@ -244,6 +244,8 @@
     .panel.is-before .chorus.reveal { transform:translate(-50%,calc(-50% - 2.8rem)); }
     .chorus h2 { margin:0; font-size:clamp(2.8rem,13.5vw,6.2rem); font-weight:300; line-height:1; letter-spacing:.03em; }
     .chorus strong { display:block; margin-top:.18rem; font:clamp(1.8rem,7.5vw,3.5rem)/1 var(--latin); text-transform:uppercase; }
+    .continuation-lockup { position:absolute; inset:0; display:grid; place-items:center; }
+    .continuation-title { margin:0; writing-mode:vertical-rl; text-orientation:upright; font-size:clamp(2rem,8vw,4rem); font-weight:300; line-height:1; letter-spacing:.32em; }
     .chorus p { margin:2.4rem 0 0; font-size:clamp(1.24rem,5vw,2.2rem); font-weight:300; }
     .hook-type-scene { position:absolute; inset:0; z-index:4; overflow:hidden; container-type:inline-size; visibility:visible!important; pointer-events:none; }
     .hook-type-word { position:absolute; top:calc(50% - 14.833cqw); left:50%; display:flex; gap:2.55cqw; margin:0; translate:-50% -50%; color:var(--ink); font:400 clamp(2.7rem,11.8cqw,5.5rem)/1 var(--serif); white-space:nowrap; transform-origin:center; will-change:transform,opacity; }
@@ -287,6 +289,7 @@
     html.scroll-driven .local-static-content { clip-path:inset(25% 0 0 0); }
     html.scroll-driven .natural-page-title,
     html.scroll-driven .natural-page-brand { z-index:7; opacity:1; transform:none; }
+    html.scroll-driven .continuation-lockup { translate:0 -24svh; }
     html.scroll-driven .scroll-cue { display:none; }
     html.scroll-driven .darian-verse-panel .page-content-layer { opacity:0 !important; }
     .darian-verse-sequence { position:absolute; inset:0; z-index:4; width:100%; height:100svh; pointer-events:none; }
@@ -320,6 +323,7 @@
     .live-artboard .chapter-index { gap:3cqw; font-size:3.6cqw; }
     .live-artboard .chapter-name { font-size:5.3cqw; line-height:1; }
     .live-artboard .chapter-name small { font:1cqw/1 var(--latin); }
+    .live-artboard .continuation-title { font-size:7.2cqw; line-height:1; letter-spacing:.32em; }
     .absolute-glyph-line { position:absolute!important; inset:0!important; margin:0!important; writing-mode:horizontal-tb!important; font-size:4cqw!important; line-height:1!important; letter-spacing:0!important; white-space:normal!important; }
     .absolute-glyph-line .live-glyph { position:absolute; display:flex; align-items:center; justify-content:center; font-size:4cqw; line-height:1; }
     .absolute-glyph-line.emphasis .live-glyph { font-size:5.3cqw; }
@@ -458,6 +462,9 @@
         <p class="vline reveal" style="--x:13%;--y:17%;--delay:.27s">走出了山里又走入了另一座山林</p>
         <p class="vline reveal" style="--x:-2%;--y:6%;--delay:.32s">Wu　人们丢掉自己　过一阵　又找回自己</p>
       </div>
+    </div></section>
+    <section class="panel continuation-panel" aria-label="未完待续"><div class="frame">
+      <div class="continuation-lockup"><h2 class="continuation-title">未完待续</h2></div>
     </div></section>
   </main>
   <div class="scroll-cue" aria-hidden="true">SCROLL</div>
@@ -660,6 +667,11 @@
       };
       addBasicScene(scenePanels[0],makeStage(scenePanels[0],['.cover-art','.cover-en','.cover-thesis']));
       addBasicScene(scenePanels[1],makeStage(scenePanels[1],['.artist-mark','.artist-caption']));
+      const continuationPanel=scenePanels.at(-1);
+      const continuationStage=makeStage(continuationPanel,['.continuation-lockup']);
+      const continuationTl=makeScrollTimeline(continuationPanel);
+      continuationTl.fromTo(continuationStage,{autoAlpha:0,yPercent:8,scale:1.035},{autoAlpha:1,yPercent:0,scale:1,duration:.52,ease:'power2.out'},.02)
+        .to(continuationStage,{autoAlpha:1,yPercent:0,scale:1,duration:.46,ease:'none'},.54);
 
       const page3Tl=makeScrollTimeline(scenePanels[2]);
       const page3Thesis=scenePanels[2].querySelector('.vertical-thesis');
