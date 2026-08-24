@@ -635,7 +635,7 @@
       };
       gsap.set(singleVideo,{autoAlpha:0});
       ScrollTrigger.create({
-        trigger:scenePanels[2],
+        trigger:scenePanels[5],
         start:'top 100%',
         onEnter:ensureSingleVideo,
         onEnterBack:ensureSingleVideo
@@ -683,10 +683,8 @@
         if(singleVideoTl.progress()<=.005)singleVideo.pause();
       });
       const syncMediaState=()=>{
-        if(scrollY>=scenePanels[2].offsetTop-(innerHeight||1)){
-          ensureSingleVideo();
-          ensureDarianAudio();
-        }
+        if(scrollY>=scenePanels[2].offsetTop-(innerHeight||1))ensureDarianAudio();
+        if(scrollY>=scenePanels[5].offsetTop-(innerHeight||1))ensureSingleVideo();
         syncVideoPlayback();
         if(audioUnlocked){
           if(wantsDarianMedia()&&!darianAudioFailed)ensureDarianAudio();
