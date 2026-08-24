@@ -356,7 +356,7 @@
 </head>
 <body>
   <div class="film" aria-hidden="true">
-    <video class="film-grass" autoplay muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="metadata" poster="./scene-assets/grass-still-v2.webp"><source src="./scene-assets/perf-video/grass-1080p-3000k.mp4" type="video/mp4"></video>
+    <video class="film-grass" muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="none" poster="./scene-assets/grass-still-v2.webp" data-src="./scene-assets/perf-video/grass-1080p-3000k.mp4"></video>
     <video class="film-single" muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="none" data-poster="./scene-assets/building-still.jpg" data-src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/805a72245001834816572932474/EVVfh6rU89oA.mp4"></video>
   </div>
   <audio class="album-audio" preload="none" loop data-src="./scene-assets/album-intro.mp3"></audio>
@@ -534,7 +534,15 @@
 
       const grassVideo=document.querySelector('.film-grass');
       const singleVideo=document.querySelector('.film-single');
+      let grassVideoReady=false;
       let singleVideoReady=false;
+      const ensureGrassVideo=()=>{
+        if(grassVideoReady||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+        grassVideo.src=grassVideo.dataset.src;
+        grassVideo.preload='auto';
+        grassVideo.load();
+        grassVideoReady=true;
+      };
       const ensureSingleVideo=()=>{
         if(singleVideoReady)return;
         singleVideo.poster=singleVideo.dataset.poster;
@@ -678,6 +686,14 @@
           }
         }
       };
+      const startGrassVideo=()=>{
+        ensureGrassVideo();
+        syncVideoPlayback();
+      };
+      addEventListener('load',()=>{
+        if('requestIdleCallback'in window)requestIdleCallback(startGrassVideo,{timeout:800});
+        else setTimeout(startGrassVideo,120);
+      },{once:true});
       singleVideoTl.eventCallback('onUpdate',syncVideoPlayback);
       singleVideo.addEventListener('playing',()=>{
         if(singleVideoTl.progress()<=.005)singleVideo.pause();
@@ -1091,6 +1107,7 @@
       const unlockMedia=()=>{
         if(audioUnlocked||unlockAttempting)return;
         unlockAttempting=true;
+        ensureGrassVideo();
         syncVideoPlayback();
         const target=darianGateLocked||wantsDarianMedia()?darianAudio:albumAudio;
         const secondary=target===albumAudio?darianAudio:albumAudio;
