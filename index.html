@@ -345,7 +345,7 @@
     <video class="film-grass" autoplay muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="metadata" poster="./scene-assets/home-still.jpg"><source src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/05fb49605001834816621742566/u2XduuVvyLYA.mp4" type="video/mp4"></video>
     <video class="film-single" autoplay muted loop playsinline webkit-playsinline x5-playsinline x5-video-player-type="h5-page" preload="none" poster="./scene-assets/building-still.jpg" data-src="https://1313808286.vod-qcloud.com/697ccb8avodcq1313808286/805a72245001834816572932474/EVVfh6rU89oA.mp4"></video>
   </div>
-  <audio class="album-audio" preload="metadata" loop src="./scene-assets/album-intro.mp3"></audio>
+  <audio class="album-audio" autoplay preload="auto" loop src="./scene-assets/album-intro.mp3"></audio>
   <audio class="darian-audio" preload="metadata" loop src="./scene-assets/darian.mp3"></audio>
   <main>
     <section class="panel" aria-label="丰饶之海封面"><div class="frame">
@@ -936,6 +936,38 @@
         syncMediaState();
       };
       unlockEvents.forEach(type=>addEventListener(type,unlockMedia,{passive:true}));
+
+      let autoplayAttempting=false;
+      const attemptInitialAlbumAutoplay=()=>{
+        if(audioUnlocked||autoplayAttempting)return;
+        autoplayAttempting=true;
+        albumAudio.volume=1;
+        darianAudio.volume=0;
+        const darianPrime=darianAudio.play();
+        darianPrime?.then(()=>{
+          if(darianAudio!==currentAudio){darianAudio.pause();darianAudio.currentTime=0}
+        }).catch(()=>{});
+        const albumStart=albumAudio.play();
+        if(!albumStart){
+          audioUnlocked=true;
+          currentAudio=albumAudio;
+          autoplayAttempting=false;
+          syncMediaState();
+          return;
+        }
+        albumStart.then(()=>{
+          audioUnlocked=true;
+          currentAudio=albumAudio;
+          autoplayAttempting=false;
+          syncMediaState();
+        }).catch(()=>{
+          autoplayAttempting=false;
+          albumAudio.volume=0;
+        });
+      };
+      document.addEventListener('WeixinJSBridgeReady',attemptInitialAlbumAutoplay,{once:true});
+      addEventListener('load',attemptInitialAlbumAutoplay,{once:true});
+      requestAnimationFrame(attemptInitialAlbumAutoplay);
 
       let darianGatePassed=false;
       let darianGateLocked=false;
