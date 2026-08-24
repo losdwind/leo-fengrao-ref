@@ -516,33 +516,83 @@
         singleVideo.src=singleVideo.dataset.src;
         singleVideo.preload='auto';
         singleVideo.load();
-        singleVideo.play().catch(()=>{});
         singleVideoReady=true;
       };
       const albumAudio=document.querySelector('.album-audio');
       const darianAudio=document.querySelector('.darian-audio');
+      const mediaPlay=media=>{
+        try{
+          const attempt=media.play();
+          return attempt?.then?attempt:Promise.resolve();
+        }catch(error){
+          return Promise.reject(error);
+        }
+      };
       let audioUnlocked=false;
       let currentAudio=null;
+      let pendingAudio=null;
+      let pendingAudioPromise=null;
+      let audioTransitionId=0;
+      let darianAudioFailed=false;
       const activateAudio=audio=>{
-        if(!audioUnlocked)return;
-        if(currentAudio===audio){
-          if(audio.paused)audio.play().catch(()=>{});
-          return;
+        if(!audioUnlocked)return Promise.resolve(false);
+        if(pendingAudio&&pendingAudio!==audio){
+          audioTransitionId++;
+          if(pendingAudio!==currentAudio){pendingAudio.pause();pendingAudio.volume=0}
+          pendingAudio=null;
+          pendingAudioPromise=null;
+          gsap.killTweensOf([albumAudio,darianAudio]);
         }
+        if(currentAudio===audio){
+          if(!audio.paused){
+            if(audio.volume<.999)gsap.to(audio,{volume:1,duration:.28,ease:'power1.out'});
+            return Promise.resolve(true);
+          }
+        }
+        if(pendingAudio===audio&&pendingAudioPromise)return pendingAudioPromise;
+        const transitionId=++audioTransitionId;
         gsap.killTweensOf([albumAudio,darianAudio]);
-        const outgoing=currentAudio;
-        currentAudio=audio;
+        const outgoing=currentAudio&&currentAudio!==audio?currentAudio:null;
+        pendingAudio=audio;
         audio.volume=0;
-        audio.play().catch(()=>{});
-        gsap.to(audio,{volume:1,duration:.9,ease:'power1.inOut'});
-        if(outgoing)gsap.to(outgoing,{volume:0,duration:.9,ease:'power1.inOut',onComplete:()=>outgoing.pause()});
+        const transition=mediaPlay(audio).then(()=>{
+          if(transitionId!==audioTransitionId){
+            if(audio!==currentAudio){audio.pause();audio.volume=0}
+            return false;
+          }
+          pendingAudio=null;
+          pendingAudioPromise=null;
+          currentAudio=audio;
+          gsap.to(audio,{volume:1,duration:.9,ease:'power1.inOut'});
+          if(outgoing)gsap.to(outgoing,{volume:0,duration:.9,ease:'power1.inOut',onComplete:()=>{
+            if(currentAudio!==outgoing)outgoing.pause();
+          }});
+          return true;
+        }).catch(()=>{
+          if(transitionId===audioTransitionId){
+            pendingAudio=null;
+            pendingAudioPromise=null;
+            audio.pause();
+            audio.volume=0;
+            if(outgoing){
+              currentAudio=outgoing;
+              outgoing.volume=1;
+              if(outgoing.paused)mediaPlay(outgoing).catch(()=>{});
+            }else{
+              currentAudio=null;
+            }
+          }
+          return false;
+        });
+        pendingAudioPromise=transition;
+        return transition;
       };
       gsap.set(singleVideo,{autoAlpha:0});
       ScrollTrigger.create({
         trigger:scenePanels[4],
         start:'top 100%',
-        onEnter:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{})},
-        onEnterBack:()=>{ensureSingleVideo();singleVideo.play().catch(()=>{})}
+        onEnter:ensureSingleVideo,
+        onEnterBack:ensureSingleVideo
       });
       let singleVideoTl=gsap.timeline({
         scrollTrigger:{
@@ -556,10 +606,31 @@
       singleVideoTl.to(grassVideo,{autoAlpha:0,duration:1,ease:'none'},0)
         .fromTo(singleVideo,{autoAlpha:0},{autoAlpha:1,duration:1,ease:'none'},0);
       const wantsDarianMedia=()=>scrollY>=singleVideoTl.scrollTrigger.start;
+      const syncVideoPlayback=()=>{
+        if(document.visibilityState!=='visible'){
+          grassVideo.pause();
+          if(singleVideoReady)singleVideo.pause();
+          return;
+        }
+        const progress=singleVideoTl.progress();
+        if(progress<.995){
+          if(grassVideo.paused)mediaPlay(grassVideo).catch(()=>{});
+        }else if(!grassVideo.paused){
+          grassVideo.pause();
+        }
+        if(singleVideoReady){
+          if(progress>.005){
+            if(singleVideo.paused)mediaPlay(singleVideo).catch(()=>{});
+          }else if(!singleVideo.paused){
+            singleVideo.pause();
+          }
+        }
+      };
+      singleVideoTl.eventCallback('onUpdate',syncVideoPlayback);
       const syncMediaState=()=>{
         if(scrollY>=scenePanels[4].offsetTop-(innerHeight||1))ensureSingleVideo();
-        if(singleVideoReady&&singleVideo.paused&&document.visibilityState==='visible')singleVideo.play().catch(()=>{});
-        if(audioUnlocked)activateAudio(wantsDarianMedia()?darianAudio:albumAudio);
+        syncVideoPlayback();
+        if(audioUnlocked)activateAudio(wantsDarianMedia()&&!darianAudioFailed?darianAudio:albumAudio);
       };
       let mediaSyncFrame=0;
       const scheduleMediaSync=()=>{
@@ -920,25 +991,53 @@
       requestAnimationFrame(refreshStableState);
       addEventListener('pageshow',refreshStableState);
       addEventListener('orientationchange',()=>setTimeout(refreshStableState,250),{passive:true});
+      const audios=[albumAudio,darianAudio];
       document.addEventListener('visibilitychange',()=>{
-        if(document.visibilityState==='visible')refreshStableState();
-      });
-      const videos=[...document.querySelectorAll('.film video')];
-      const unlockEvents=['pointerdown','touchstart','click'];
-      const unlockMedia=()=>{
-        if(audioUnlocked)return;
-        audioUnlocked=true;
-        unlockEvents.forEach(type=>removeEventListener(type,unlockMedia));
-        videos.forEach(video=>video.play().catch(()=>{}));
-        [albumAudio,darianAudio].forEach(audio=>{
-          audio.volume=0;
-          const primed=audio.play();
-          primed?.then(()=>{
-            if(audio!==currentAudio){audio.pause();audio.currentTime=0}
-          }).catch(()=>{});
+        if(document.visibilityState==='visible'){
+          refreshStableState();
+          return;
+        }
+        const keepAudio=pendingAudio&&!pendingAudio.paused?pendingAudio:currentAudio;
+        audioTransitionId++;
+        pendingAudio=null;
+        pendingAudioPromise=null;
+        gsap.killTweensOf(audios);
+        audios.forEach(audio=>{
+          if(audio===keepAudio&&!audio.paused){
+            audio.volume=1;
+          }else{
+            audio.volume=0;
+            audio.pause();
+          }
         });
-        currentAudio=null;
-        syncMediaState();
+        currentAudio=keepAudio&&!keepAudio.paused?keepAudio:null;
+        syncVideoPlayback();
+      });
+      const unlockEvents=['pointerdown','touchstart','click','keydown','wheel'];
+      let unlockAttempting=false;
+      const unlockMedia=()=>{
+        if(audioUnlocked||unlockAttempting)return;
+        unlockAttempting=true;
+        syncVideoPlayback();
+        const target=darianGateLocked||wantsDarianMedia()?darianAudio:albumAudio;
+        const secondary=target===albumAudio?darianAudio:albumAudio;
+        target.volume=0;
+        secondary.volume=0;
+        mediaPlay(secondary).then(()=>{
+          if(secondary!==currentAudio){secondary.pause();secondary.currentTime=0}
+        }).catch(()=>{});
+        mediaPlay(target).then(()=>{
+          audioUnlocked=true;
+          unlockAttempting=false;
+          unlockEvents.forEach(type=>removeEventListener(type,unlockMedia));
+          currentAudio=target;
+          target.volume=1;
+          syncMediaState();
+          if(darianGateLocked)requestDarianPlayback();
+        }).catch(()=>{
+          unlockAttempting=false;
+          target.volume=0;
+        });
       };
       unlockEvents.forEach(type=>addEventListener(type,unlockMedia,{passive:true}));
 
@@ -974,11 +1073,19 @@
       addEventListener('load',attemptInitialAlbumAutoplay,{once:true});
       requestAnimationFrame(attemptInitialAlbumAutoplay);
 
-      let darianGatePassed=false;
+      const darianGateStorageKey='fengrao-darian-gate-passed-v1';
+      const readGateState=()=>{
+        try{return sessionStorage.getItem(darianGateStorageKey)==='1'}catch{return false}
+      };
+      const writeGateState=()=>{
+        try{sessionStorage.setItem(darianGateStorageKey,'1')}catch{}
+      };
+      let darianGatePassed=readGateState();
       let darianGateLocked=false;
       let gateTouchY=null;
       let gateCheckFrame=0;
-      let gateReleaseTimer=0;
+      let gateConfirmTimer=0;
+      let gateFallbackTimer=0;
       const darianGateY=()=>Math.round(scenePanels[6].offsetTop);
       const setDarianGateLocked=locked=>{
         darianGateLocked=locked;
@@ -986,21 +1093,59 @@
       const releaseDarianGate=()=>{
         if(!darianGateLocked)return;
         darianGatePassed=true;
-        clearTimeout(gateReleaseTimer);
+        writeGateState();
+        clearTimeout(gateConfirmTimer);
+        clearTimeout(gateFallbackTimer);
+        gateConfirmTimer=0;
+        gateFallbackTimer=0;
         setDarianGateLocked(false);
+      };
+      const recoverFromDarianFailure=()=>{
+        darianAudioFailed=true;
+        audioTransitionId++;
+        pendingAudio=null;
+        pendingAudioPromise=null;
+        gsap.killTweensOf([albumAudio,darianAudio]);
+        darianAudio.volume=0;
+        darianAudio.pause();
+        if(audioUnlocked){
+          currentAudio=albumAudio;
+          albumAudio.volume=1;
+          if(albumAudio.paused)mediaPlay(albumAudio).catch(()=>{});
+        }
+      };
+      const failOpenDarianGate=()=>{
+        if(!darianGateLocked)return;
+        recoverFromDarianFailure();
+        releaseDarianGate();
+      };
+      const armDarianFallback=()=>{
+        if(!darianGateLocked||!audioUnlocked||gateFallbackTimer)return;
+        gateFallbackTimer=setTimeout(()=>{
+          gateFallbackTimer=0;
+          if(!darianAudio.paused&&darianAudio.readyState>=2&&darianAudio.currentTime>0){
+            releaseDarianGate();
+          }else{
+            failOpenDarianGate();
+          }
+        },12000);
       };
       const confirmDarianPlayback=()=>{
         if(!darianGateLocked)return;
-        clearTimeout(gateReleaseTimer);
-        gateReleaseTimer=setTimeout(()=>{
+        clearTimeout(gateConfirmTimer);
+        gateConfirmTimer=setTimeout(()=>{
+          gateConfirmTimer=0;
           if(!darianAudio.paused&&darianAudio.readyState>=2&&darianAudio.currentTime>0)releaseDarianGate();
         },220);
       };
       const requestDarianPlayback=()=>{
         if(!audioUnlocked)return;
-        activateAudio(darianAudio);
-        darianAudio.play().then(confirmDarianPlayback).catch(()=>{});
-        if(!darianAudio.paused)confirmDarianPlayback();
+        if(darianAudio.error){failOpenDarianGate();return}
+        armDarianFallback();
+        activateAudio(darianAudio).then(started=>{
+          if(started)confirmDarianPlayback();
+          else if(darianAudio.error)failOpenDarianGate();
+        });
       };
       const enforceDarianGate=()=>{
         if(darianGatePassed)return;
@@ -1021,6 +1166,17 @@
       };
       addEventListener('scroll',scheduleGateCheck,{passive:true});
       darianAudio.addEventListener('playing',confirmDarianPlayback);
+      darianAudio.addEventListener('error',()=>{
+        darianAudioFailed=true;
+        if(darianGateLocked)failOpenDarianGate();
+        else scheduleMediaSync();
+      });
+      darianAudio.addEventListener('canplay',()=>{
+        if(darianAudioFailed&&!darianAudio.error){
+          darianAudioFailed=false;
+          scheduleMediaSync();
+        }
+      });
       addEventListener('touchstart',event=>{
         gateTouchY=event.touches[0]?.clientY??null;
         if(darianGateLocked)requestDarianPlayback();
@@ -1032,10 +1188,18 @@
       },{passive:false});
       addEventListener('touchend',()=>{gateTouchY=null},{passive:true});
       addEventListener('wheel',event=>{
-        if(darianGateLocked&&event.deltaY>0)event.preventDefault();
+        if(darianGateLocked&&event.deltaY>0){
+          unlockMedia();
+          requestDarianPlayback();
+          event.preventDefault();
+        }
       },{passive:false});
       addEventListener('keydown',event=>{
-        if(darianGateLocked&&['ArrowDown','PageDown','End',' '].includes(event.key))event.preventDefault();
+        if(darianGateLocked&&['ArrowDown','PageDown','End',' '].includes(event.key)){
+          unlockMedia();
+          requestDarianPlayback();
+          event.preventDefault();
+        }
       });
       requestAnimationFrame(enforceDarianGate);
     })();
