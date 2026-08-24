@@ -193,6 +193,9 @@
     .cover-en { position:absolute; top:50.4%; right:15%; font:.66rem/.88 Arial,sans-serif; }
     .cover-thesis { position:absolute; top:65.1%; left:50%; width:82%; margin:0; transform:translateX(-50%); font-size:clamp(1.42rem,6.3vw,2.75rem); font-weight:300; letter-spacing:-.05em; text-align:center; }
     .cover-thesis small,.artist-caption small { display:block; margin-top:.32rem; font:clamp(.47rem,1.8vw,.7rem)/1.12 var(--latin); letter-spacing:-.03em; text-transform:uppercase; }
+    .start-playback { position:absolute; top:75.2%; left:50%; z-index:6; margin:0; padding:.5rem .75rem; border:0; color:var(--ink); background:transparent; font:300 clamp(.68rem,2.7vw,.92rem)/1 var(--serif); letter-spacing:.12em; white-space:nowrap; cursor:pointer; pointer-events:auto; appearance:none; transform:translate(-50%,0); animation:start-playback-float 2.35s cubic-bezier(.45,0,.55,1) infinite alternate; transition:opacity .65s ease,filter .65s ease; }
+    .start-playback.is-complete { opacity:0; filter:blur(2px); pointer-events:none; animation:none; }
+    @keyframes start-playback-float { from{transform:translate(-50%,0);opacity:.68} to{transform:translate(-50%,-.42rem);opacity:1} }
     .artist-mark { position:absolute; top:33.5%; left:50%; width:32%; max-height:29%; transform:translateX(-50%); }
     .artist-caption { position:absolute; top:64.3%; left:50%; width:80%; margin:0; transform:translateX(-50%); font-size:clamp(1.2rem,5.5vw,2.4rem); font-weight:300; text-align:center; }
     .vertical-title { position:absolute; top:10.3%; left:4.2%; width:27%; height:42%; object-fit:contain; object-position:left top; }
@@ -319,6 +322,7 @@
     .live-artboard .overview-art-en { font:400 1.8cqw/.88 Arial,sans-serif; }
     .live-artboard .cover-en { font:1.6cqw/.88 Arial,sans-serif; }
     .live-artboard .cover-thesis { top:64.2%; font-size:4.2cqw; line-height:1; }
+    .live-artboard .start-playback { font-size:2.7cqw; }
     .live-artboard .cover-thesis small,
     .live-artboard .artist-caption small { font:1.7cqw/1.12 var(--latin); }
     .live-artboard .artist-caption { font-size:4.2cqw; }
@@ -364,6 +368,7 @@
       </div>
       <div class="cover-en reveal" style="--delay:.12s">THE SEA<br>OF FERTILITY</div>
       <h1 class="cover-thesis reveal" style="--delay:.2s">在匮乏中抵达丰饶<small>ARRIVING AT ABUNDANCE<br>THROUGH SCARCITY</small></h1>
+      <button class="start-playback" type="button" aria-label="开始播放首页音乐">开始播放</button>
     </div></section>
     <section class="panel" aria-label="李奥"><div class="frame">
       <img class="title-image artist-mark reveal" src="./scene-assets/home-artist.png" alt="李奥">
@@ -689,7 +694,7 @@
           .to(content,{autoAlpha:1,yPercent:0,scale:1,duration:.16,ease:'none'},.38)
           .to(content,{autoAlpha:0,yPercent:-9,scale:.975,duration:.40,ease:'power2.in'},.56);
       };
-      addBasicScene(scenePanels[0],makeStage(scenePanels[0],['.cover-art','.cover-en','.cover-thesis']));
+      addBasicScene(scenePanels[0],makeStage(scenePanels[0],['.cover-art','.cover-en','.cover-thesis','.start-playback']));
       addBasicScene(scenePanels[1],makeStage(scenePanels[1],['.artist-mark','.artist-caption']));
       const continuationPanel=scenePanels.at(-1);
       const continuationStage=makeStage(continuationPanel,['.continuation-lockup']);
@@ -1076,6 +1081,16 @@
         });
       };
       unlockEvents.forEach(type=>addEventListener(type,unlockMedia,{passive:true}));
+      const startPlaybackButton=document.querySelector('.start-playback');
+      const completeStartPlayback=()=>{
+        startPlaybackButton.classList.add('is-complete');
+        startPlaybackButton.disabled=true;
+      };
+      startPlaybackButton.addEventListener('click',event=>{
+        event.stopPropagation();
+        unlockMedia();
+      });
+      albumAudio.addEventListener('playing',completeStartPlayback);
 
       let autoplayAttempting=false;
       const attemptInitialAlbumAutoplay=()=>{
