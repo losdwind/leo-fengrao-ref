@@ -936,6 +936,71 @@
         syncMediaState();
       };
       unlockEvents.forEach(type=>addEventListener(type,unlockMedia,{passive:true}));
+
+      let darianGatePassed=false;
+      let darianGateLocked=false;
+      let gateTouchY=null;
+      let gateCheckFrame=0;
+      let gateReleaseTimer=0;
+      const darianGateY=()=>Math.round(scenePanels[6].offsetTop);
+      const setDarianGateLocked=locked=>{
+        darianGateLocked=locked;
+      };
+      const releaseDarianGate=()=>{
+        if(!darianGateLocked)return;
+        darianGatePassed=true;
+        clearTimeout(gateReleaseTimer);
+        setDarianGateLocked(false);
+      };
+      const confirmDarianPlayback=()=>{
+        if(!darianGateLocked)return;
+        clearTimeout(gateReleaseTimer);
+        gateReleaseTimer=setTimeout(()=>{
+          if(!darianAudio.paused&&darianAudio.readyState>=2&&darianAudio.currentTime>0)releaseDarianGate();
+        },220);
+      };
+      const requestDarianPlayback=()=>{
+        if(!audioUnlocked)return;
+        activateAudio(darianAudio);
+        darianAudio.play().then(confirmDarianPlayback).catch(()=>{});
+        if(!darianAudio.paused)confirmDarianPlayback();
+      };
+      const enforceDarianGate=()=>{
+        if(darianGatePassed)return;
+        const limit=darianGateY();
+        if(scrollY>=limit){
+          if(!darianGateLocked){
+            setDarianGateLocked(true);
+            requestDarianPlayback();
+          }
+          if(scrollY>limit+1)scrollTo(0,limit);
+        }else if(darianGateLocked&&scrollY<limit-2){
+          setDarianGateLocked(false);
+        }
+      };
+      const scheduleGateCheck=()=>{
+        if(gateCheckFrame)return;
+        gateCheckFrame=requestAnimationFrame(()=>{gateCheckFrame=0;enforceDarianGate()});
+      };
+      addEventListener('scroll',scheduleGateCheck,{passive:true});
+      darianAudio.addEventListener('playing',confirmDarianPlayback);
+      addEventListener('touchstart',event=>{
+        gateTouchY=event.touches[0]?.clientY??null;
+        if(darianGateLocked)requestDarianPlayback();
+      },{passive:true});
+      addEventListener('touchmove',event=>{
+        const nextY=event.touches[0]?.clientY??gateTouchY;
+        if(darianGateLocked&&gateTouchY!==null&&nextY<gateTouchY)event.preventDefault();
+        gateTouchY=nextY;
+      },{passive:false});
+      addEventListener('touchend',()=>{gateTouchY=null},{passive:true});
+      addEventListener('wheel',event=>{
+        if(darianGateLocked&&event.deltaY>0)event.preventDefault();
+      },{passive:false});
+      addEventListener('keydown',event=>{
+        if(darianGateLocked&&['ArrowDown','PageDown','End',' '].includes(event.key))event.preventDefault();
+      });
+      requestAnimationFrame(enforceDarianGate);
     })();
   </script>
 </body>
